@@ -31,7 +31,42 @@ Friendships/relationships<br/><br/>
 
 We are available on D floor, and you can book your session via the school portal any time of the day or night. We are available 5 days a week. <br/>
 
-If you need support outside of school hours, you may find the following links useful:
+If you need support outside of school hours, you may find the following links useful: <br /> <br />
+<p className="hover:translate-y-1 transition-all duration-500">
+  <a href="https://www.good-thinking.uk/" className="hover:underline">
+    Good-Thinking
+  </a>
+  <br />
+</p>
+
+<p className="hover:translate-y-1 transition-all duration-500">
+  <a href="https://www.kooth.com/" className="hover:underline">
+    Kooth
+  </a>
+  <br />
+</p>
+
+<p className="hover:translate-y-1 transition-all duration-500">
+  <a href="https://www.childline.org.uk/" className="hover:underline ">
+    Childline
+  </a>
+  <br />
+</p>
+
+<p className="hover:translate-y-1 transition-all duration-500">
+  <a href="https://www.youngminds.org.uk/" className="hover:underline">
+    Young Minds
+  </a>
+  <br />
+</p>
+
+<p className="hover:translate-y-1 transition-all duration-500">
+  <a href="https://www.mind.org.uk/for-young-people/" className="hover:underline">
+    Mind
+  </a>
+  <br />
+</p>
+
 </p>
         </div>
       </div>
