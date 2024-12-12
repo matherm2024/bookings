@@ -1,2 +1,2 @@
 
-bookingsfrontend was an aciendet and I literally have no idea how to get rid of it, I guess it's staying.
+Hosting this app is a nightmare come someone please help me 
