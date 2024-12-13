@@ -7,8 +7,7 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-    - bookingsfrontend
+
   workflow_dispatch:
 
 jobs:
