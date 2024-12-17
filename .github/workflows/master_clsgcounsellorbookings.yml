@@ -54,5 +54,5 @@ jobs:
         with:
           app-name: 'CLSGCounsellorBookings'
           slot-name: 'Production'
-          package: './dist'
+          package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F1C4A9A89BD74C6FAA08EDF9D338DE03 }}
