@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173, // Local development port
   },
-  base: 'https://clsgcounsellorbookings-afg2a3dga9dkdeg7.uksouth-01.azurewebsites.net', // Azure URL
+  base: '/', // Azure URL
   build: {
     outDir: 'dist', 
   },
