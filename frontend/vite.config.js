@@ -8,7 +8,7 @@ export default defineConfig({
   },
   base: '/clsgcounsellorbookings-afg2a3dga9dkdeg7.uksouth-01.azurewebsites.net/', // Azure URL
   build: {
-    outDir: 'dist', // Ensure this matches your workflow configuration
+    outDir: 'build', // Ensure this matches your workflow configuration
   },
 });
 
