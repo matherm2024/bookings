@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173, // Local development port
   },
-  base: '/clsgcounsellorbookings-afg2a3dga9dkdeg7.uksouth-01.azurewebsites.net/', // Azure URL
+  base: 'https://clsgcounsellorbookings-afg2a3dga9dkdeg7.uksouth-01.azurewebsites.net/', // Azure URL
   build: {
     outDir: 'build', // Ensure this matches your workflow configuration
   },
