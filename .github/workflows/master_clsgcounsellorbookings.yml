@@ -27,6 +27,7 @@ jobs:
           cd frontend
           npm install
           npm run config.vite.js --if-present
+          npm run build
           npm run test --if-present
       
       - name: Upload artifact for deployment job
