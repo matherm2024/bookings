@@ -55,4 +55,4 @@ jobs:
           app-name: 'CLSGCounsellorBookings'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: ./frontend/dist # Point to the built artifacts folder.
+          package: .
