@@ -1,5 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import express from 'express'
+
+const app = express();
+
 app.get('/', (req, res) => {
   res.redirect('/login');
 });
