@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: bookings # Matches the first workflow's "path" directive
+          path: bookings # Matches your project structure
 
       - name: Debug directory structure
         run: |
@@ -29,16 +29,20 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd bookings/admin # Adjusted to match the first workflow's path
+          cd bookings/admin # Adjust to where `package.json` exists
           npm install
           npm run build 
           npm test --if-present 
+
+      - name: Copy package.json to build folder
+        run: |
+          cp ./bookings/admin/package.json ./bookings/admin/dist # Ensure `package.json` is included in the artifact
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./bookings/admin/dist # Matches the first workflow's build output
+          path: ./bookings/admin/dist
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,7 +51,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Required for requesting the JWT, retained from the first workflow
+      id-token: write # Required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -73,5 +77,5 @@ jobs:
         with:
           app-name: 'CLSGCounsellorPanel'
           slot-name: 'Production'
-          package: .
+          package: ./ # Ensure this points to the root where `package.json` and built assets exist
 
