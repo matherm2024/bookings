@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: bookings
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
