@@ -1,6 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 name: Build and deploy Node.js app to Azure Web App - CLSGCounsellorPanel
+
 on:
   push:
     branches:
@@ -10,10 +11,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
         with:
-          path: bookings
+          path: bookings # Matches the first workflow's "path" directive
 
       - name: Debug directory structure
         run: |
@@ -27,16 +29,16 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd bookings/admin
+          cd bookings/admin # Adjusted to match the first workflow's path
           npm install
           npm run build 
           npm test --if-present 
-      
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./bookings/admin/dist
+          path: ./bookings/admin/dist # Matches the first workflow's build output
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,25 +47,31 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
+      id-token: write # Required for requesting the JWT, retained from the first workflow
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
+      - name: Debug downloaded artifact
+        run: |
+          pwd
+          ls -R
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{secrets.AZUREAPPSERVICE_CLIENTID_E04FD9C42C9445689B0FB60B08F14F48}}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E04FD9C42C9445689B0FB60B08F14F48 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A0C33C26F9994F88A0B1D09690B8DF43 }}
-          subscription-id: ${{secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11E868E4D5CE4BDB8E7D87A69DFA5E88 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11E868E4D5CE4BDB8E7D87A69DFA5E88 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'CLSGCounsellorPanel'
           slot-name: 'Production'
           package: .
+
