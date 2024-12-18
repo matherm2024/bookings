@@ -29,7 +29,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd admin
+          cd bookings/admin
           npm install
           npm run build 
           npm test --if-present 
