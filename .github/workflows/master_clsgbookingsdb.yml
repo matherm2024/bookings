@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./backend/build # Point to the build folder output from `npm run build`.
+          path: ./backend # Uploads the entire `backend` folder or adjust if the `build` folder is used.
 
   deploy:
     runs-on: ubuntu-latest
@@ -53,5 +53,6 @@ jobs:
           app-name: 'CLSGBookingsDB'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_27A7E6122D844F888C315E0A0FACAD26 }}
-          package: ./backend/build # Ensure it points to the built artifacts folder.
+          package: ./backend # Deploys the artifact downloaded from the `build` job.
+
 
