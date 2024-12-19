@@ -49,6 +49,6 @@ jobs:
           app-name: 'CLSGBookingsDB'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
-          package: backend # Deploy the backend folder
+          package: .
 
 
