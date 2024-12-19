@@ -53,6 +53,6 @@ jobs:
           app-name: 'CLSGBookingsDB'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_27A7E6122D844F888C315E0A0FACAD26 }}
-          package: ./backend # Deploys the artifact downloaded from the `build` job.
+          package: .
 
 
