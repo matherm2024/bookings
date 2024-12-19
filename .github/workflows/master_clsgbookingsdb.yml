@@ -20,6 +20,7 @@ jobs:
 
       - name: Install dependencies and fix vulnerabilities
         run: |
+          cd backend
           npm install
           npm audit fix
 
