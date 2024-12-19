@@ -52,7 +52,7 @@ jobs:
         with:
           app-name: 'CLSGBookingsDB'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_27A7E6122D844F888C315E0A0FACAD26 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB}}
           package: .
 
 
