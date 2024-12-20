@@ -40,7 +40,10 @@ jobs:
         with:
           name: node-app
 
-
+      - name: Install dependencies on server
+        run: |
+          cd ./backend
+          npm install --production
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -50,5 +53,6 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: .
+
 
 
