@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies on server
         run: |
-          cd backend
+          cd bookings/backend
           npm install --production
 
       - name: Deploy to Azure Web App
