@@ -80,5 +80,5 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'CLSGCounsellorPanel'
-          package: ./node-app # Points directly to the artifact
+          package: ./
 
