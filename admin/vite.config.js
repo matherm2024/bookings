@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
  
   server:{port:5174},
-  base: '/pages/Login'
+  base: 'src/pages/Login/'
 
 }
 
