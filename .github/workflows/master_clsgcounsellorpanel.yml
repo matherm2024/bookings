@@ -80,5 +80,5 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'CLSGCounsellorPanel'
-          package: ./
+          package: ./bookings/admin/dist
 
