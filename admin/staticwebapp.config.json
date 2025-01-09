@@ -1,16 +1,6 @@
 {
-  "routes": [
-    {
-      "route": "/",
-      "rewrite": "/app.jsx"
-    },
-    {
-      "route": "/api/*",
-      "allowedRoles": ["authenticated"]
-    }
-  ],
   "navigationFallback": {
-    "rewrite": "/404.jsx",
+    "rewrite": "/index.html",
     "exclude": ["/api/*"]
   }
 }
