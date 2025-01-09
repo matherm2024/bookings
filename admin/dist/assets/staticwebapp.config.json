@@ -1,0 +1,64 @@
+{
+  "routes": [
+    {
+      "route": "/",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/admin-dashboard",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/all-appointments",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/add-counsellor",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/all-counsellors",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/all-calendars",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/counsellor-dashboard",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/counsellor-appointments",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/counsellor-profile",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/calendar",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/login",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/forgot-password",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/password-reset/:id/:token",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/api/*",
+      "allowedRoles": ["authenticated"]
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/api/*"]
+  }
+}
