@@ -35,9 +35,6 @@ jobs:
       - name: Prepare artifact with dependencies
         run: |
           cp ./bookings/admin/package.json ./bookings/admin/dist
-          
-          cp ./bookings/admin/index.html ./bookings/admin/dist/
-          cp ./bookings/admin/web.config ./bookings/admin/dist/
           cd ./bookings/admin/dist
           npm install --omit=dev # Ensure runtime dependencies
 
