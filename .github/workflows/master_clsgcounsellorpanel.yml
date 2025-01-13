@@ -35,13 +35,21 @@ jobs:
           npm install
           npm run build 
           npm test --if-present 
+       # Step to locate web.config
+      - name: Locate web.config
+        run: |
+          find . -name "web.config"
 
-      # Step 5: Copy web.config to the build directory
+  # Step to copy web.config (adjust path based on find output)
       - name: Ensure web.config is included in build
         run: |
-            pwd
-            ls -R ./bookings/admin
-            cp ./bookings/admin/web.config ./bookings/admin/dist
+         cp ./bookings/admin/web.config ./bookings/admin/dist
+
+  # Step to debug the build structure
+      - name: Debug artifact structure
+        run: |
+         ls -R ./bookings/admin/dist | head -n 100
+
 
 
       # Step 6: Prepare artifact with dependencies
