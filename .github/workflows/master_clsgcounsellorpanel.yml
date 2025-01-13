@@ -35,10 +35,12 @@ jobs:
           npm install
           npm run build 
           npm test --if-present 
+          
        # Step to locate web.config
       - name: Locate web.config
         run: |
           find . -name "web.config"
+          find . -name "staticwebapp.config.json"
 
 
 
