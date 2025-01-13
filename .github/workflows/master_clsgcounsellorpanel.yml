@@ -9,10 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production
-      VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
-      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
 
 
     steps:
