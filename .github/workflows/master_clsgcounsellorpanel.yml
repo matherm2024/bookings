@@ -14,7 +14,7 @@ jobs:
       # Step 1: Checkout code
       - uses: actions/checkout@v4
         with:
-          path: bookings # Matches your project structure
+          path: bookings 
 
       # Step 2: Debug directory structure
       - name: Debug directory structure
@@ -40,12 +40,9 @@ jobs:
         run: |
           find . -name "web.config"
 
-  # Step to copy web.config (adjust path based on find output)
-      - name: Ensure web.config is included in build
-        run: |
-         cp  ./admin/dist/web.config
 
-  # Step to debug the build structure
+
+  # Step 5:  Debug the build structure
       - name: Debug artifact structure
         run: |
          ls -R ./bookings/admin/dist | head -n 100
