@@ -43,7 +43,7 @@ jobs:
   # Step to copy web.config (adjust path based on find output)
       - name: Ensure web.config is included in build
         run: |
-         cp ./bookings/admin/web.config ./bookings/admin/dist
+         cp  ./bookings/admin/dist
 
   # Step to debug the build structure
       - name: Debug artifact structure
