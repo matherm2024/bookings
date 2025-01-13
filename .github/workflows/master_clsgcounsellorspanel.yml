@@ -1,4 +1,6 @@
-name: Build and deploy Node.js app to Azure Web App - CLSGCounsellorPanel
+
+
+name: Build and deploy Node.js app to Azure Web App - CLSGCounsellorsPanel
 
 on:
   push:
@@ -11,60 +13,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
       - uses: actions/checkout@v4
         with:
           path: bookings # Matches your project structure
 
-      # Step 2: Debug directory structure
       - name: Debug directory structure
         run: |
           pwd
           ls -R
 
-      # Step 3: Set up Node.js version
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      # Step 4: Install dependencies, build, and test
       - name: npm install, build, and test
         run: |
           cd bookings/admin # Adjust to where `package.json` exists
           npm install
           npm run build 
           npm test --if-present 
-       # Step to locate web.config
-      - name: Locate web.config
-        run: |
-          find . -name "web.config"
 
-  # Step to copy web.config (adjust path based on find output)
-      - name: Ensure web.config is included in build
-        run: |
-         cp ./bookings/admin/web.config ./bookings/admin/dist
-
-  # Step to debug the build structure
-      - name: Debug artifact structure
-        run: |
-         ls -R ./bookings/admin/dist | head -n 100
-
-
-
-      # Step 6: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
           cp ./bookings/admin/package.json ./bookings/admin/dist 
           cd ./bookings/admin/dist
           npm install --omit=dev # Ensure runtime dependencies
 
-      # Step 7: Verify final artifact structure
       - name: Verify final artifact structure
         run: |
           ls -R ./bookings/admin/dist
 
-      # Step 8: Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -81,34 +60,30 @@ jobs:
       id-token: write # Required for requesting the JWT
 
     steps:
-      # Step 9: Download artifact from build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
-      # Step 10: Debug downloaded artifact
       - name: Debug downloaded artifact
         run: |
           pwd
           ls -R
 
-      # Step 11: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E04FD9C42C9445689B0FB60B08F14F48 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A0C33C26F9994F88A0B1D09690B8DF43 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11E868E4D5CE4BDB8E7D87A69DFA5E88 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FB0156AE123F4678A31EEA4BC9452F01 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A3EA067A15DE473BB7222A94CC5FC7AD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_FB0709E95E364E6DBA52F37D2307817D }}
 
-      # Step 12: Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'CLSGCounsellorPanel'
+          app-name: 'CLSGCounsellorsPanel'
           package: ./
 
 
 
-
+          
