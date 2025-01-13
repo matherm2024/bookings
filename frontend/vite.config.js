@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173, // Local development port
   },
-  base: '/', // Azure URL
+  base: '/', 
   build: {
     outDir: 'dist', 
   },

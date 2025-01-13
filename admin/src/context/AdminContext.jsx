@@ -24,7 +24,7 @@ const AdminContextProvider = (props) => {
             
             if (data.success){
                 setCounsellors(data.counsellors)
-                console.log(data.counsellors);
+                
                 
 
             }else{
@@ -68,7 +68,7 @@ const AdminContextProvider = (props) => {
                 return [];
             }
         } catch (error) {
-            console.error("Error fetching appointments:", error);
+            
             setAppointments([]);
             return [];
         }
@@ -100,7 +100,7 @@ const AdminContextProvider = (props) => {
             const {data} = await axios.get(backendUrl+'/api/admin/dashboard', {headers:{aToken}})
             if (data.success){
                 setDashData(data.dashData)
-                console.log(data.dashData);
+                
                 
             }else{
                 toast.error(error.message)
