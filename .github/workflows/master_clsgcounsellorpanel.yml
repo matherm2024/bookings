@@ -39,7 +39,10 @@ jobs:
       # Step 5: Copy web.config to the build directory
       - name: Ensure web.config is included in build
         run: |
-          cp ./bookings/admin/web.config ./bookings/admin/dist 
+            pwd
+            ls -R ./bookings/admin
+            cp ./bookings/admin/web.config ./bookings/admin/dist
+
 
       # Step 6: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
