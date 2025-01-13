@@ -11,20 +11,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code
       - uses: actions/checkout@v4
         with:
           path: bookings # Matches your project structure
 
+      # Step 2: Debug directory structure
       - name: Debug directory structure
         run: |
           pwd
           ls -R
 
+      # Step 3: Set up Node.js version
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
+      # Step 4: Install dependencies, build, and test
       - name: npm install, build, and test
         run: |
           cd bookings/admin # Adjust to where `package.json` exists
@@ -32,16 +36,24 @@ jobs:
           npm run build 
           npm test --if-present 
 
+      # Step 5: Copy web.config to the build directory
+      - name: Ensure web.config is included in build
+        run: |
+          cp ./bookings/admin/web.config ./bookings/admin/dist 
+
+      # Step 6: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
           cp ./bookings/admin/package.json ./bookings/admin/dist 
           cd ./bookings/admin/dist
           npm install --omit=dev # Ensure runtime dependencies
 
+      # Step 7: Verify final artifact structure
       - name: Verify final artifact structure
         run: |
           ls -R ./bookings/admin/dist
 
+      # Step 8: Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -58,16 +70,19 @@ jobs:
       id-token: write # Required for requesting the JWT
 
     steps:
+      # Step 9: Download artifact from build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
+      # Step 10: Debug downloaded artifact
       - name: Debug downloaded artifact
         run: |
           pwd
           ls -R
 
+      # Step 11: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -75,12 +90,14 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A0C33C26F9994F88A0B1D09690B8DF43 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11E868E4D5CE4BDB8E7D87A69DFA5E88 }}
 
+      # Step 12: Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'CLSGCounsellorPanel'
           package: ./
+
 
 
 
