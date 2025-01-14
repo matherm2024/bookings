@@ -39,6 +39,7 @@ jobs:
       # Step 5: Create and move .env file
       - name: Create .env file
         env:
+           DIST_DIR: ./bookings/admin
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
@@ -46,8 +47,7 @@ jobs:
           echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created with secrets"
-          cp .env dist/ # Copy .env to the dist directory
-
+          
       # Step 6: Locate and debug files
       - name: Locate important files
         run: |
