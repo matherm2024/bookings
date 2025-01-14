@@ -56,6 +56,7 @@ jobs:
         run: |
           find . -name "web.config"
           find . -name "staticwebapp.config.json"
+          find . -name ".env"
 
       - name: Print environment variables
         run: printenv
