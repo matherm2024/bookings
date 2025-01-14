@@ -10,7 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-
     steps:
       # Step 1: Checkout code
       - uses: actions/checkout@v4
@@ -36,7 +35,8 @@ jobs:
           npm install
           npm run build 
           npm test --if-present 
-          
+
+      # Step 5: Create and move .env file
       - name: Create .env file
         env:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
@@ -46,41 +46,33 @@ jobs:
           echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created with secrets"
-          cp .env dist/
+          cp .env dist/ # Copy .env to the dist directory
 
-
-
-          
-       # Step to locate web.config and env
-      - name: Locate web.config
+      # Step 6: Locate and debug files
+      - name: Locate important files
         run: |
           find . -name "web.config"
           find . -name "staticwebapp.config.json"
           find . -name ".env"
 
-      - name: Print environment variables
-        run: printenv
-
-  # Step 5:  Debug the build structure
+      # Step 7: Debug the build structure
       - name: Debug artifact structure
         run: |
-         ls -R ./bookings/admin/dist | head -n 100
+          ls -R ./bookings/admin/dist | head -n 100
 
-
-
-      # Step 6: Prepare artifact with dependencies
+      # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
-          cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/.env ./bookings/admin/dist 
+          cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/dist 
           cd ./bookings/admin/dist 
           npm install --omit=dev # Ensure runtime dependencies
 
-      # Step 7: Verify final artifact structure
+      # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
         run: |
           ls -R ./bookings/admin/dist
 
-      # Step 8: Upload artifact for deployment job
+      # Step 10: Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -97,19 +89,19 @@ jobs:
       id-token: write # Required for requesting the JWT
 
     steps:
-      # Step 9: Download artifact from build job
+      # Step 11: Download artifact from build job
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
-      # Step 10: Debug downloaded artifact
+      # Step 12: Debug downloaded artifact
       - name: Debug downloaded artifact
         run: |
           pwd
           ls -R
 
-      # Step 11: Login to Azure
+      # Step 13: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -117,14 +109,13 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A0C33C26F9994F88A0B1D09690B8DF43 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11E868E4D5CE4BDB8E7D87A69DFA5E88 }}
 
-      # Step 12: Deploy to Azure Web App
+      # Step 14: Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'CLSGCounsellorPanel'
           package: ./
-
 
 
 
