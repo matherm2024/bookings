@@ -10,8 +10,5 @@ export default defineConfig({
   base: '/'
 
 },
-  define: {
-    'process.env': process.env, // Explicitly use process.env in case Vite defaults fail
-  },
 
 )
