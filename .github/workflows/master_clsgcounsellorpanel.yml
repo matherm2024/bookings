@@ -63,9 +63,10 @@ jobs:
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
-          cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/dist ./bookings/admin/.env
-          cd ./bookings/admin/dist 
-          npm install --omit=dev # Ensure runtime dependencies
+           cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/.env ./bookings/admin/dist/
+           cd ./bookings/admin/dist
+           npm install --omit=dev # Ensure runtime dependencies
+
 
       # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
