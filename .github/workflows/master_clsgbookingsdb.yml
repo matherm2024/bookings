@@ -19,6 +19,44 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+          
+      - name: Create .env file
+        env:
+           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+           CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+           CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }} 
+           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+           HOST: ${{ secrets.HOST }}
+           SERVICE: ${{ secrets.SERVICE }}
+           EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+           SECURE: ${{ secrets.EMAIL_PORT }}
+           USER: ${{ secrets.USER }}
+           PASS: ${{ secrets.PASS }}
+           FRONTEND_URLC: ${{ secrets.FRONTEND_URLC }}
+           
+           
+        run: |
+          cd backend
+          echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
+          echo "FRONTEND_URLC=${FRONTEND_URLC}" >> .env
+          echo "PASS=${PASS}" >> .env
+          echo "USER=${USER}" >> .env
+          echo "SECURE=${SECURE}" >> .env
+          echo "EMAIL_PORT=${EMAIL_PORT}" >> .env
+          echo "SERVICE=${SERVICE}" >> .env
+          echo "HOST=${HOST}" >> .env
+          echo "JWT_SECRET=${JWT_SECRET}" >> .env
+          echo "ADMIN_PASSWORD=${ADMIN_PASSWORD}" >> .env
+          echo "ADMIN_EMAIL=${ADMIN_EMAIL}" >> .env
+          echo "CLOUDINARY_SECRET_KEY=${CLOUDINARY_SECRET_KEY}" >> .env
+          echo "CLOUDINARY_NAME=${CLOUDINARY_NAME}" >> .env
+          echo "MONGODB_URI=${MONGODB_URI}" >> .env
+          echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
+          echo ".env file created"
 
       # Install backend dependencies
       - name: Install dependencies
