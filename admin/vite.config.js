@@ -9,6 +9,9 @@ export default defineConfig({
   server:{port:5174},
   base: '/'
 
-}
+},
+  define: {
+    'process.env': process.env, // Explicitly use process.env in case Vite defaults fail
+  },
 
 )
