@@ -36,6 +36,17 @@ jobs:
           npm install
           npm run build 
           npm test --if-present 
+      - name: Create .env file
+        env:
+           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+        run: |
+          echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
+          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
+          echo ".env file created with secrets"
+
+
+
           
        # Step to locate web.config and env
       - name: Locate web.config
