@@ -39,7 +39,6 @@ jobs:
       # Step 5: Create and move .env file
       - name: Create .env file
         env:
-           DIST_DIR: ./bookings/admin/public
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
@@ -63,7 +62,7 @@ jobs:
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
-           cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/public/.env ./bookings/admin/dist/
+           cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/.env ./bookings/admin/dist/
            cd ./bookings/admin/dist
            npm install --omit=dev # Ensure runtime dependencies
 
