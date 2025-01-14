@@ -36,11 +36,13 @@ jobs:
           npm install
           npm run build 
           npm test --if-present 
+          
       - name: Create .env file
         env:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
+          cd bookings/admin
           echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created with secrets"
@@ -67,6 +69,7 @@ jobs:
       # Step 6: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
+          cp ./bookings/admin/.env
           cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/dist 
           cd ./bookings/admin/dist 
           npm install --omit=dev # Ensure runtime dependencies
