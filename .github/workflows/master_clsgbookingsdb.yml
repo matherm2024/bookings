@@ -62,7 +62,7 @@ jobs:
 
           # Debug: Print .env contents (hide sensitive values for security)
           echo "Created .env file contents:"
-          grep -v "PASS\|USER\|SECRET_KEY\|ADMIN_PASSWORD\|JWT_SECRET" .env || true
+          grep -v "PASS\|USER\|SECRET_KEY\|ADMIN_PASSWORD\|JWT_SECRET\|MONGODB_URI\|CLOUDINARY_NAME\|CLOUDINARY_NAME\|ADMIN_EMAIL\|HOST\|SERVICE\|EMAIL_PORT\|SECURE\|FRONTEND_URLC\|FRONTEND_URL|" .env || true
 
       # Install Node.js dependencies (including dotenv)
       - name: Install Node.js dependencies (including dotenv)
