@@ -76,6 +76,13 @@ jobs:
         run: |
           zip -r node-app.zip backend
         shell: bash
+        
+              # Log deployed files
+      - name: Debug Deployed Files
+        run: |
+          ls -R
+        working-directory: ./backend
+
 
       # Upload artifact
       - name: Upload deployment artifact
