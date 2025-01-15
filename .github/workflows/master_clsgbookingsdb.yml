@@ -104,7 +104,6 @@ jobs:
         with:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
-          package: ./backend
-
+          package: .
       
       
