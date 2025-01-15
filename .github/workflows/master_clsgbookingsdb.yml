@@ -1,10 +1,8 @@
-
 name: Build and deploy Node.js app to Azure Web App - clsgbookingsdb
 
 on:
   push:
     branches:
-    
       - master
   workflow_dispatch:
 
@@ -29,7 +27,7 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
-          CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }} 
+          CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }}
           ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
@@ -60,44 +58,39 @@ jobs:
           EOF
           echo ".env file created"
 
-          # Debug: Print .env contents (hide sensitive values for security)
-          echo "Created .env file contents:"
-          grep -v "PASS\|USER\|SECRET_KEY\|ADMIN_PASSWORD\|JWT_SECRET\|MONGODB_URI\|CLOUDINARY_NAME\|CLOUDINARY_NAME\|ADMIN_EMAIL\|HOST\|SERVICE\|EMAIL_PORT\|SECURE\|FRONTEND_URLC\|FRONTEND_URL|" .env || true
-
-      # Install Node.js dependencies (including dotenv)
-      - name: Install Node.js dependencies (including dotenv)
+      # Install dependencies
+      - name: Install Node.js dependencies
         run: |
           cd backend
           npm install
 
-      # Debug: Log environment variable usage in runtime
-      - name: Test environment variable usage
+      # Verify build and start script
+      - name: Verify start script
         run: |
           cd backend
-          echo "Testing environment variable usage:"
-          node -e "
-            const dotenv = require('dotenv');
-            dotenv.config();
-            console.log('Loaded MONGODB_URI:', process.env.MONGODB_URI ? 'Present' : 'Missing');
-            console.log('Loaded FRONTEND_URL:', process.env.FRONTEND_URL ? 'Present' : 'Missing');
-          "
+          echo "Checking package.json:"
+          cat package.json | grep '"start":'
 
-      # Upload the backend folder with node_modules as an artifact
+      # Prepare the deployment artifact
       - name: Create deployment artifact
+        run: |
+          zip -r node-app.zip backend
+        shell: bash
+
+      # Upload artifact
+      - name: Upload deployment artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: |
-            backend
-            backend/package.json
-            backend/server.js
+          path: node-app.zip
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
+
     steps:
-      # Download the artifact from the build job
-      - name: Download artifact from build job
+      # Download the artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: node-app
@@ -108,6 +101,6 @@ jobs:
         with:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
-          package: .
-      
+          package: ./node-app.zip
+
       
