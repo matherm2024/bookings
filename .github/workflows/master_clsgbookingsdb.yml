@@ -103,10 +103,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-              # Ensure the zip file is in the correct path
-      - name: Move deployment artifact
+# Locate and move the deployment artifact
+      - name: Locate and move deployment artifact
         run: |
-         mv bookings/node-app.zip ./node-app.zip
+          # Find the artifact dynamically and move it to the expected location
+          ARTIFACT_PATH=$(find . -name "node-app.zip" | head -n 1)
+          echo "Artifact found at: $ARTIFACT_PATH"
+          mv "$ARTIFACT_PATH" ./node-app.zip
+
+    # Verify the artifact is in the expected location
+      - name: Verify deployment artifact
+        run: |
+          ls -la ./node-app.zip
+          file ./node-app.zip
 
       # Deploy to Azure Web App
       - name: Deploy to Azure Web App
