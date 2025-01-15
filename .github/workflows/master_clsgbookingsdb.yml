@@ -89,4 +89,11 @@ jobs:
             backend/package.json
             backend/server.js
 
-
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'CLSGBookingsDB'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
+          package: ./backend
+      
+      
