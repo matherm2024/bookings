@@ -22,9 +22,8 @@ connectCloudinary()
 app.use(express.json())
 app.use(cors())
 const cors = require('cors');
-app.use(cors({
-  origin: 'https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net/',
-}));
+app.options('*', cors()); // Enable preflight across all routes
+
 
 
 
