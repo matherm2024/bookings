@@ -22,11 +22,12 @@ connectCloudinary()
 app.use(express.json())
 app.use(cors())
 const cors = require('cors');
-app.options('*', cors()); // Enable preflight across all routes
+
 
 const allowedOrigins = [
   'https://clsgcounsellorpanel-c6crezf5e3h5fafe.uksouth-01.azurewebsites.net',
-  'https://clsgcounsellorbookings-afg2a3dga9dkdeg7.uksouth-01.azurewebsites.net'
+  'https://clsgcounsellorbookings-afg2a3dga9dkdeg7.uksouth-01.azurewebsites.net',
+  'https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net'
 ];
 
 app.use(cors({
@@ -40,7 +41,7 @@ app.use(cors({
 }));
 
 
-
+app.options('*', cors()); // Enable preflight across all routes
 
 
 
