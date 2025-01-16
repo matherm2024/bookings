@@ -26,17 +26,7 @@ const allowedOrigins = [
   'https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net',
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-  })
-);
+app.use(cors({ origin: '*' }));
 app.options('*', cors()); // Enable preflight across all routes
 
 // API endpoints
