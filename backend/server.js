@@ -68,6 +68,13 @@ app.get('/', (req, res) => {
   res.send('API WORKING');
 });
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack); // Log detailed error to the console (visible in Azure Log Stream)
+  res.status(500).send('Something broke!'); // Return a generic error message to the client
+});
+
+
 // Start the server
 app.listen(port, () => console.log(`Server started on port ${port}`));
 
