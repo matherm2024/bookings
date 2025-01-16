@@ -71,24 +71,26 @@ jobs:
           echo "Checking package.json:"
           cat package.json | grep '"start":'
 
-      # Prepare the deployment artifact
+          # Prepare the deployment artifact
       - name: Create deployment artifact
         run: |
           cd backend
-          zip -r ../node-app.zip .
+          zip -r node-app.zip .
 
       # Debug deployment artifact creation
       - name: Debug deployment artifact
         run: |
-          ls -la ../
-          file ../node-app.zip
+          cd backend
+          ls -la
+          file node-app.zip
 
       # Upload artifact
       - name: Upload deployment artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ../node-app.zip
+          path: backend/node-app.zip
+
 
 
   deploy:
