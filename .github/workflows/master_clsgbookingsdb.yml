@@ -1,6 +1,5 @@
 name: Build and deploy Node.js app to Azure Web App - clsgbookingsdb
 
-
 on:
   push:
     branches:
@@ -72,7 +71,7 @@ jobs:
           echo "Checking package.json:"
           cat package.json | grep '"start":'
 
-          # Prepare the deployment artifact
+      # Prepare the deployment artifact
       - name: Create deployment artifact
         run: |
           cd backend
@@ -92,8 +91,6 @@ jobs:
           name: node-app
           path: backend/node-app.zip
 
-
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -105,6 +102,12 @@ jobs:
         with:
           name: node-app
 
+      # Verify artifact content
+      - name: Verify artifact content
+        run: |
+          ls -la
+          unzip -l node-app.zip
+
       # Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
@@ -112,5 +115,3 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
-
-      
