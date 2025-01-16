@@ -75,24 +75,21 @@ jobs:
       - name: Create deployment artifact
         run: |
           cd backend
-          zip -r ../node-app.zip * .[^.]*
+          zip -r ../node-app.zip .
 
-      # Debug deployment artifact
+      # Debug deployment artifact creation
       - name: Debug deployment artifact
         run: |
-          ls -la
-          file node-app.zip
+          ls -la ../
+          file ../node-app.zip
 
       # Upload artifact
       - name: Upload deployment artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./node-app.zip
-          
-      - name: Verify zip contents
-        run: |
-          unzip -l ../node-app.zip
+          path: ../node-app.zip
+
 
   deploy:
     runs-on: ubuntu-latest
