@@ -92,6 +92,7 @@ app.get('/bookings/frontend/*', (req, res) => {
 
 
 app.get('/', (req, res) => {
+  console.log('Serving index.html through server.js');
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
