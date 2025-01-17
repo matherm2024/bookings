@@ -38,19 +38,19 @@ app.use('/api/user', userRouter);
 const __dirname = path.resolve(); // Get the current directory
 app.use(
   '/bookings/admin',
-  express.static(path.join(__dirname, 'bookings', 'admin', 'dist')) // Adjust the path if needed
+  express.static(path.join( 'bookings', 'admin', 'dist')) // Adjust the path if needed
 );
 app.get('/bookings/admin/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'bookings', 'admin', 'dist', 'index.html'));
+  res.sendFile(path.resolve( 'bookings', 'admin', 'dist', 'index.html'));
 });
 
 // Serve static files for User Frontend
 app.use(
   '/bookings/frontend',
-  express.static(path.join(__dirname,  'bookings', 'frontend', 'build')) // Adjust the path if needed
+  express.static(path.join( 'bookings', 'frontend', 'build')) // Adjust the path if needed
 );
 app.get('/bookings/frontend/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname,  'bookings', 'frontend', 'build', 'index.html'));
+  res.sendFile(path.resolve(  'bookings', 'frontend', 'build', 'index.html'));
 });
 
 
