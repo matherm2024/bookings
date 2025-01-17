@@ -53,6 +53,12 @@ app.get('/bookings/frontend/*', (req, res) => {
   res.sendFile(path.resolve(__dirname,  'bookings', 'frontend', 'build', 'index.html'));
 });
 
+
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Default route for API status
 app.get('/', (req, res) => {
   res.send('API WORKING');
