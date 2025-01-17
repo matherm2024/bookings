@@ -53,14 +53,15 @@ app.get('/bookings/frontend/*', (req, res) => {
   res.sendFile(path.resolve(__dirname,  'bookings', 'frontend', 'build', 'index.html'));
 });
 
+// Serve index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-// Default route for API status
-app.get('/', (req, res) => {
+
+// API status route
+app.get('/api/status', (req, res) => {
   res.send('API WORKING');
 });
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack); // Log detailed error to the console (visible in Azure Log Stream)
