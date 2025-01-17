@@ -117,4 +117,4 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
-          startupCommand: 'npm start'
+
