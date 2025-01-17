@@ -64,6 +64,7 @@ jobs:
         run: |
           cd backend
           npm install
+          npm install --production
 
       # Verify build and start script
       - name: Verify start script
