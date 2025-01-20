@@ -62,8 +62,8 @@ app.get('/api/status', (req, res) => {
   try {
     res.send('API WORKING');
   } catch (err) {
-    console.error('Error in /api/status:', err);
-    res.status(500).send('Internal Server Error testing');
+    console.error('Error in /api/status:', err, 'testing');
+    res.status(500).send('Internal Server Error');
   }
 });
 // Error handling middleware
