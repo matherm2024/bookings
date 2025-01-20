@@ -116,15 +116,20 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
-
-      # Set Azure App Service Startup Command
+          
+      # Set Azure App Service Startup Command using Azure CLI
       - name: Set Azure App Service Startup Command
-        uses: azure/appservice-settings@v3
-        with:
-          app-name: 'CLSGBookingsDB'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
-          settings: |
-            WEBSITES_PORT=4000
-            SCM_DO_BUILD_DURING_DEPLOYMENT=true
-            STARTUP_COMMAND="npm start"
+        run: |
+          echo "${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}" > publishProfile.pubxml
+          az webapp config appsettings set \
+            --resource-group <RESOURCE_GROUP_NAME> \
+            --name CLSGBookingsDB \
+            --settings WEBSITES_PORT=4000 SCM_DO_BUILD_DURING_DEPLOYMENT=true
+          az webapp config set \
+            --resource-group <RESOURCE_GROUP_NAME> \
+            --name CLSGBookingsDB \
+            --startup-file "npm start"
+        env:
+          AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
+
 
