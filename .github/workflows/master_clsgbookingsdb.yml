@@ -112,29 +112,11 @@ jobs:
           ls -la
           unzip -l node-app.zip
 
-      # Authenticate with Azure using the Publish Profile
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
-
-      # Set Azure App Service Startup Command using Azure CLI
-      - name: Set Azure App Service Startup Command
-        run: |
-          echo "Setting Azure App Service configuration..."
-          az webapp config appsettings set \
-            --resource-group CitySchools_Bookings_System \
-            --name CLSGBookingsDB \
-            --settings WEBSITES_PORT=4000 SCM_DO_BUILD_DURING_DEPLOYMENT=true
-          az webapp config set \
-            --resource-group CitySchools_Bookings_System \
-            --name CLSGBookingsDB \
-            --startup-file "npm start"
-
-      # Deploy to Azure Web App
+      # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
+
