@@ -58,9 +58,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// API status route
 app.get('/api/status', (req, res) => {
-  res.send('API WORKING');
+  try {
+    res.send('API WORKING');
+  } catch (err) {
+    console.error('Error in /api/status:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 // Error handling middleware
 app.use((err, req, res, next) => {
