@@ -13,6 +13,7 @@
       .then((response) => response.text())
       .then((data) => {
         console.log('Server Response:', data); // Log the server's response
+        console.log(process.env.CLOUDINARY_NAME)
       })
       .catch((error) => {
         console.error('Error connecting to the server:', error);
