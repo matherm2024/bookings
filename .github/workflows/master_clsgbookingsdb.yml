@@ -65,7 +65,7 @@ jobs:
           npm install
           npm install --production
 
-      # Verify build and start script
+      # Verify start script
       - name: Verify start script
         run: |
           cd backend
@@ -116,4 +116,15 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
+
+      # Set Azure App Service Startup Command
+      - name: Set Azure App Service Startup Command
+        uses: azure/appservice-settings@v3
+        with:
+          app-name: 'CLSGBookingsDB'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
+          settings: |
+            WEBSITES_PORT=4000
+            SCM_DO_BUILD_DURING_DEPLOYMENT=true
+            STARTUP_COMMAND="npm start"
 
