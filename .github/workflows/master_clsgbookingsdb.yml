@@ -122,11 +122,11 @@ jobs:
         run: |
           echo "${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}" > publishProfile.pubxml
           az webapp config appsettings set \
-            --resource-group <RESOURCE_GROUP_NAME> \
+            --resource-group CitySchools_Bookings_System \
             --name CLSGBookingsDB \
             --settings WEBSITES_PORT=4000 SCM_DO_BUILD_DURING_DEPLOYMENT=true
           az webapp config set \
-            --resource-group <RESOURCE_GROUP_NAME> \
+            --resource-group CitySchools_Bookings_System \
             --name CLSGBookingsDB \
             --startup-file "npm start"
         env:
