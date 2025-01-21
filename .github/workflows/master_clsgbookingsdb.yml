@@ -116,11 +116,6 @@ jobs:
           ls -la
           unzip -l node-app.zip
 
-          # Verify the start script in package.json
-      - name: Verify start script
-        run: |
-          echo "Verifying start script in package.json..."
-          cat package.json | grep '"start":'
 
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
