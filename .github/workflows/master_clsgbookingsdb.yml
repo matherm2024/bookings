@@ -126,11 +126,7 @@ jobs:
           chmod +rx app/server.js
           ls -la app
 
-      # Add detailed logging for node execution
-      - name: Run server.js locally for debugging (optional)
-        run: |
-          cd app
-          node server.js || echo "Error running server.js locally. Check for missing dependencies or environment variables."
+
 
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
