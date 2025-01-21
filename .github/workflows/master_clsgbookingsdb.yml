@@ -65,6 +65,8 @@ jobs:
         run: |
           cd backend
           npm install
+          npm rebuild bcrypt --build-from-source
+
 
       # Verify the start script in package.json
       - name: Verify start script
