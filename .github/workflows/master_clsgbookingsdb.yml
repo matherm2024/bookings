@@ -139,4 +139,4 @@ jobs:
       # Debug deployment logs
       - name: Debug deployment logs
         run: |
-          curl -X GET https://${{ https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net }}/api/deployments/log
+          curl -X GET https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net/api/deployments/log
