@@ -115,6 +115,10 @@ jobs:
           echo "Verifying downloaded artifact content..."
           ls -la
           unzip -l node-app.zip
+          
+      - name: read server.js
+        run: chmod +r server.js
+
 
 
       # Deploy to Azure Web App using the publish profile
