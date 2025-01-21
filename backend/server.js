@@ -31,7 +31,7 @@ app.use(cors({ origin: '*' }));
 app.options('*', cors()); // Enable preflight across all routes
 
 // Set base URL for API endpoints
-const baseURL = 'https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net/api';
+const baseURL = 'http://localhost:4000/api';
 
 app.use(`${baseURL}/admin`, adminRouter);
 app.use(`${baseURL}/doctor`, doctorRouter);
