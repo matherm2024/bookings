@@ -67,7 +67,6 @@ jobs:
           npm install
           npm rebuild bcrypt --build-from-source
 
-
       # Verify the start script in package.json
       - name: Verify start script
         run: |
@@ -75,13 +74,12 @@ jobs:
           echo "Verifying start script in package.json..."
           cat package.json | grep '"start":'
 
-# Prepare deployment artifact
+      # Prepare deployment artifact
       - name: Create deployment artifact
         run: |
           cd backend
           npm install --production # Ensure production dependencies are installed
           zip -r node-app.zip . # Package everything
-
 
       # Debug deployment artifact creation
       - name: Debug deployment artifact
@@ -115,11 +113,18 @@ jobs:
           echo "Verifying downloaded artifact content..."
           ls -la
           unzip -l node-app.zip
-          
-      - name: read server.js
-        run: chmod +r server.js
 
+      # Extract the artifact
+      - name: Extract deployment artifact
+        run: |
+          unzip node-app.zip -d app
+          ls -la app
 
+      # Ensure server.js is readable
+      - name: Ensure server.js is readable
+        run: |
+          chmod +r app/server.js
+          ls -la app
 
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
@@ -128,4 +133,5 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
+
 
