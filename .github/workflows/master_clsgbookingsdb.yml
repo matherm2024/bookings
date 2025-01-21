@@ -119,7 +119,6 @@ jobs:
           # Verify the start script in package.json
       - name: Verify start script
         run: |
-          cd backend
           echo "Verifying start script in package.json..."
           cat package.json | grep '"start":'
 
