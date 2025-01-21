@@ -135,10 +135,7 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
-      - name: where are we 
-        run: |
-          cd /home/site/wwwroot
-          ls -la
+
 
       # Debug deployment logs
       - name: Debug deployment logs
