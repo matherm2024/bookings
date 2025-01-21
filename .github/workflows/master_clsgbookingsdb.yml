@@ -39,10 +39,12 @@ jobs:
           USER: ${{ secrets.USER }}
           PASS: ${{ secrets.PASS }}
           FRONTEND_URLC: ${{ secrets.FRONTEND_URLC }}
+          PORT: ${{ secrets.PORT }}
         run: |
           cd backend
           echo "Creating .env file..."
           cat <<EOF > .env
+          PORT: ${PORT }
           FRONTEND_URL=${FRONTEND_URL}
           FRONTEND_URLC=${FRONTEND_URLC}
           PASS=${PASS}
