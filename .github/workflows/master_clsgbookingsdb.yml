@@ -44,7 +44,7 @@ jobs:
           cd backend
           echo "Creating .env file..."
           cat <<EOF > .env
-          PORT= ${PORT }
+          PORT=${PORT}
           FRONTEND_URL=${FRONTEND_URL}
           FRONTEND_URLC=${FRONTEND_URLC}
           PASS=${PASS}
