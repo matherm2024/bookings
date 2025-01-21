@@ -120,11 +120,17 @@ jobs:
           unzip node-app.zip -d app
           ls -la app
 
-      # Ensure server.js is readable
-      - name: Ensure server.js is readable
+      # Ensure server.js is readable and executable
+      - name: Ensure server.js permissions
         run: |
-          chmod +r app/server.js
+          chmod +rx app/server.js
           ls -la app
+
+      # Add detailed logging for node execution
+      - name: Run server.js locally for debugging (optional)
+        run: |
+          cd app
+          node server.js || echo "Error running server.js locally. Check for missing dependencies or environment variables."
 
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
@@ -134,4 +140,7 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
 
-
+      # Debug deployment logs
+      - name: Debug deployment logs
+        run: |
+          curl -X GET https://${{ secrets.AZURE_APP_SERVICE_URL }}/api/deployments/log
