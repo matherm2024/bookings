@@ -69,7 +69,7 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-/*
+
 // Start the server
 const startServer = async () => {
   const port = process.env.PORT || (await findFreePort()); // Use Azure's PORT or find a free port
@@ -78,7 +78,5 @@ const startServer = async () => {
 export const port = process.env.PORT || (await findFreePort())
 
 
-startServer();*/
+startServer();
 
-const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Server started on port ${port}`));
