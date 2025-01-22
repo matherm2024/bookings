@@ -33,9 +33,9 @@ app.use('/bookings/admin', express.static(path.join(__dirname, 'bookings', 'admi
 app.get('/bookings/admin/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'bookings', 'admin', 'dist', 'index.html'));
 });
-app.use('/bookings/frontend', express.static(path.join(__dirname, 'bookings', 'frontend', 'build')));
+app.use('/bookings/frontend', express.static(path.join(__dirname, 'bookings', 'frontend')));
 app.get('/bookings/frontend/*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'bookings', 'frontend', 'build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'bookings', 'frontend', 'index.html'));
 });
 
 app.get(`${baseURL}/status`, (req, res) => {
@@ -64,6 +64,11 @@ const findFreePort = () =>
       server.close(() => resolve(port));
     });
   });
+app.use(express.static(path.join(__dirname))); // Adjust 'build' to your actual build folder
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 
 // Start the server
 const startServer = async () => {
@@ -72,4 +77,3 @@ const startServer = async () => {
 };
 
 startServer();
-
