@@ -1,11 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "node-app/server.js",
+  "main": "node-app/server.js",  // Adjusted to reflect the correct path
   "type": "module",
   "scripts": {
-    "start": "node node-app/server.js",
-    "server": "nodemon node-app/server.js",
+    "start": "node node-app/server.js",  // Adjusted to reflect the correct path
+    "server": "nodemon node-app/server.js",  // Adjusted to reflect the correct path
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Your Name",
@@ -29,4 +29,5 @@
     "nodemon": "^3.1.7"
   }
 }
+
 
