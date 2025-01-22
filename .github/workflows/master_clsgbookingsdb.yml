@@ -39,10 +39,12 @@ jobs:
           USER: ${{ secrets.USER }}
           PASS: ${{ secrets.PASS }}
           FRONTEND_URLC: ${{ secrets.FRONTEND_URLC }}
+
         run: |
           cd backend
           echo "Creating .env file..."
           cat <<EOF > .env
+
           FRONTEND_URL=${FRONTEND_URL}
           FRONTEND_URLC=${FRONTEND_URLC}
           PASS=${PASS}
@@ -74,12 +76,12 @@ jobs:
           echo "Verifying start script in package.json..."
           cat package.json | grep '"start":'
 
-
-      # Prepare the deployment artifact
+      # Prepare deployment artifact
       - name: Create deployment artifact
         run: |
           cd backend
-          zip -r node-app.zip .
+          npm install --production # Ensure production dependencies are installed
+          zip -r node-app.zip . # Package everything
 
       # Debug deployment artifact creation
       - name: Debug deployment artifact
@@ -123,8 +125,10 @@ jobs:
       # Ensure server.js is readable and executable
       - name: Ensure server.js permissions
         run: |
-          chmod +rx app/node-app/server.js
-          ls -la app/node-app
+          chmod +rx app/server.js
+          ls -la app
+
+
 
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
@@ -133,8 +137,3 @@ jobs:
           app-name: 'CLSGBookingsDB'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILEDB }}
           package: ./node-app.zip
-
-      # Debug deployment logs
-      - name: Debug deployment logs
-        run: |
-          curl -X GET https://clsgbookingsdb-dxfqb4d5cherbvd3.uksouth-01.azurewebsites.net/api/deployments/log
