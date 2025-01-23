@@ -129,13 +129,64 @@ jobs:
           ls -la app
 
       
+    # Authenticate with Azure
+
+The error indicates that the Azure CLI is not authenticated with your Azure account in the GitHub Actions workflow environment. To resolve this, you'll need to authenticate the Azure CLI before running the az webapp config set command.
+
+Here's how to fix your workflow:
+
+Add an Azure CLI Authentication Step
+Include an authentication step in your GitHub Actions workflow to log in to Azure using a service principal.
+
+Update Workflow with Authentication
+Add the following step to authenticate before setting the startup command:
+
+yaml
+Copy
+Edit
+deploy:
+  runs-on: ubuntu-latest
+  needs: build
+
+  steps:
+    # Download the artifact from the build job
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: node-app
+
+    # Verify the downloaded artifact content
+    - name: Verify artifact content
+      run: |
+        echo "Verifying downloaded artifact content..."
+        ls -la
+        unzip -l node-app.zip
+
+    # Extract the artifact
+    - name: Extract deployment artifact
+      run: |
+        unzip node-app.zip -d app
+        ls -la app
+
+    # Ensure server.js is readable and executable
+    - name: Ensure server.js permissions
+      run: |
+        chmod +rx app/server.js
+        ls -la app
+
+    # Authenticate with Azure
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
     # Set the startup command to "npm start"
-      - name: Set startup command
-        run: |
-          az webapp config set \
-            --resource-group CitySchools_Bookings_System \
-            --name CLSGBookingsDB \
-            --startup-file "npm start"
+    - name: Set startup command
+      run: |     
+        az webapp config set \
+          --resource-group CitySchools_Bookings_System \
+          --name CLSGBookingsDB \
+          --startup-file "npm start"
             
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
