@@ -128,19 +128,7 @@ jobs:
           chmod +rx app/server.js
           ls -la app
 
-    # Authenticate with Azure
-      - name: Log in to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-    # Set the startup command to "npm start"
-      - name: Set startup command
-        run: |     
-          az webapp config set \
-            --resource-group CitySchools_Bookings_System \
-            --name CLSGBookingsDB \
-            --startup-file "npm start"
+
               
       # Deploy to Azure Web App using the publish profile
       - name: Deploy to Azure Web App
