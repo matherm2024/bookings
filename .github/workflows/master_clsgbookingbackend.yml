@@ -11,43 +11,125 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      # Set up Node.js environment
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
+      # Create and validate .env file
+      - name: Create and validate .env file
+        env:
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          HOST: ${{ secrets.HOST }}
+          SERVICE: ${{ secrets.SERVICE }}
+          EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+          SECURE: ${{ secrets.SECURE }}
+          USER: ${{ secrets.USER }}
+          PASS: ${{ secrets.PASS }}
+          FRONTEND_URLC: ${{ secrets.FRONTEND_URLC }}
+
         run: |
+          cd backend
+          echo "Creating .env file..."
+          cat <<EOF > .env
+
+          FRONTEND_URL=${FRONTEND_URL}
+          FRONTEND_URLC=${FRONTEND_URLC}
+          PASS=${PASS}
+          USER=${USER}
+          SECURE=${SECURE}
+          EMAIL_PORT=${EMAIL_PORT}
+          SERVICE=${SERVICE}
+          HOST=${HOST}
+          JWT_SECRET=${JWT_SECRET}
+          ADMIN_PASSWORD=${ADMIN_PASSWORD}
+          ADMIN_EMAIL=${ADMIN_EMAIL}
+          CLOUDINARY_SECRET_KEY=${CLOUDINARY_SECRET_KEY}
+          CLOUDINARY_NAME=${CLOUDINARY_NAME}
+          MONGODB_URI=${MONGODB_URI}
+          EOF
+          echo ".env file created and validated."
+
+      # Install dependencies
+      - name: Install Node.js dependencies
+        run: |
+          cd backend
           npm install
-          npm run build --if-present
-          npm run test --if-present
-      
-      - name: Upload artifact for deployment job
+          npm rebuild bcrypt --build-from-source
+
+      # Verify the start script in package.json
+      - name: Verify start script
+        run: |
+          cd backend
+          echo "Verifying start script in package.json..."
+          cat package.json | grep '"start":'
+
+      # Prepare deployment artifact
+      - name: Create deployment artifact
+        run: |
+          cd backend
+          npm install --production # Ensure production dependencies are installed
+          zip -r node-app.zip . # Package everything
+
+      # Debug deployment artifact creation
+      - name: Debug deployment artifact
+        run: |
+          cd backend
+          echo "Inspecting deployment artifact..."
+          ls -la
+          file node-app.zip
+
+      # Upload the deployment artifact for use in the next job
+      - name: Upload deployment artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: backend/node-app.zip
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
 
     steps:
-      - name: Download artifact from build job
+      # Download the artifact from the build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
+      # Verify the downloaded artifact content
+      - name: Verify artifact content
+        run: |
+          echo "Verifying downloaded artifact content..."
+          ls -la
+          unzip -l node-app.zip
+
+      # Extract the artifact
+      - name: Extract deployment artifact
+        run: |
+          unzip node-app.zip -d app
+          ls -la app
+
+      # Ensure server.js is readable and executable
+      - name: Ensure server.js permissions
+        run: |
+          chmod +rx app/server.js
+          ls -la app
       - name: Login to Azure
         uses: azure/login@v2
         with:
