@@ -105,7 +105,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+          
+            # Verify the downloaded artifact content
+      - name: Verify artifact content
+        run: |
+          echo "Verifying downloaded artifact content..."
+          ls -la
+          unzip -l node-app.zip
+          
       - name: Login to Azure
         uses: azure/login@v2
         with:
