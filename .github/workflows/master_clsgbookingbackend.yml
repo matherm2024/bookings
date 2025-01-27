@@ -1,4 +1,6 @@
-name: Build and deploy Node.js app to Azure Web App - clsgbookingsdb
+
+name: Build and deploy Node.js app to Azure Web App - CLSGBookingBackend
+
 
 on:
   push:
@@ -134,6 +136,6 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'CLSGBookingsDB'
+          app-name:  'CLSGBookingBackend'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_274E6BD4D1BA4E3D85D55F612CBF3449 }}
           package: ./node-app.zip
