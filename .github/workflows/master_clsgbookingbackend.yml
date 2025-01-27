@@ -76,16 +76,7 @@ jobs:
           echo "Verifying start script in package.json..."
           cat package.json | grep '"start":'
 
-      # Prepare deployment artifact
-      - name: Create deployment artifact
-        run: |
-          cd backend
-          if [ -d "node-app" ]; then
-            zip -r node-app.zip node-app
-          else
-            echo "node-app directory does not exist."
-            exit 1  # Fail if node-app directory is not found
-          fi
+
 
       # Debug deployment artifact creation
       - name: Debug deployment artifact
