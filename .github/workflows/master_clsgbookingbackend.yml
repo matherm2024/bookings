@@ -28,7 +28,20 @@ jobs:
           echo "Creating .env file..."
           cat <<EOF > .env
           FRONTEND_URL=${{ secrets.FRONTEND_URL }}
-          # Add all your other environment variables here...
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          HOST: ${{ secrets.HOST }}
+          SERVICE: ${{ secrets.SERVICE }}
+          EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+          SECURE: ${{ secrets.SECURE }}
+          USER: ${{ secrets.USER }}
+          PASS: ${{ secrets.PASS }}
+          FRONTEND_URLC: ${{ secrets.FRONTEND_URLC }}
           EOF
 
       - name: Create deployment artifact
