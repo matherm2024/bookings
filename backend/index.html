@@ -13,7 +13,7 @@
     const baseUrl = 'https://clsgbookingbackend-fwexeefbfzgwbnbc.uksouth-01.azurewebsites.net/api'; 
 
     // Make a request to the server to check if it's connected
-    fetch(`${baseUrl}/status`) 
+    fetch(`${baseUrl}/debug/port`) 
       .then((response) => response.text())
       .then((data) => {
         console.log('Server Response:', data); 
