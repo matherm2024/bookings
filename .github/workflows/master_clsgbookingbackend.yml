@@ -28,7 +28,7 @@ jobs:
           echo "Creating .env file..."
           cat <<EOF > .env
           FRONTEND_URL=${{ secrets.FRONTEND_URL }}
-          #MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
           CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
           CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_SECRET_KEY: ${{ secrets.CLOUDINARY_SECRET_KEY }}
