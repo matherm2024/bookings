@@ -9,6 +9,11 @@ import adminRouter from './routes/adminRoute.js';
 import doctorRouter from './routes/counselorRoute.js';
 import userRouter from './routes/userRoute.js';
 
+app.get('/debug/port', (req, res) => {
+  res.send(`PORT: ${process.env.PORT || 'Port not set'}`);
+});
+
+
 const app = express();
 const baseURL = '/api';
 
