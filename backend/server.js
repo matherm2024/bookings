@@ -9,19 +9,20 @@ import adminRouter from './routes/adminRoute.js';
 import doctorRouter from './routes/counselorRoute.js';
 import userRouter from './routes/userRoute.js';
 
-app.get('/debug/port', (req, res) => {
-  res.send(`PORT: ${process.env.PORT || 'Port not set'}`);
-});
-
 
 const app = express();
 const baseURL = '/api';
+
 
 // Middleware setup
 app.use(express.json());
 app.use(cors());
 app.use(cors({ origin: '*' }));
 app.options('*', cors());
+
+app.get('/debug/port', (req, res) => {
+  res.send(`PORT: ${process.env.PORT || 'Port not set'}`);
+});
 
 // Database and cloudinary setup
 connectDB();
