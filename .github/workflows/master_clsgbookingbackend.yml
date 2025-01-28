@@ -79,7 +79,11 @@ jobs:
           cd backend
           mkdir logs
           chmod 777 logs
-          
+      - name: star   
+        run: |
+          cd backend
+          npm start
+  
       - name: Debug PATH
         run: echo $PATH
 
