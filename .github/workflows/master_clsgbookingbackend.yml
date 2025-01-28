@@ -40,6 +40,7 @@ jobs:
           USER: ${{ secrets.USER }}
           PASS: ${{ secrets.PASS }}
           FRONTEND_URLC: ${{ secrets.FRONTEND_URLC }}
+          PATH: ${{ secrets.PATH }}
         run: |
           cd backend
           cat <<EOF > .env
@@ -57,6 +58,7 @@ jobs:
           CLOUDINARY_SECRET_KEY=${CLOUDINARY_SECRET_KEY}
           CLOUDINARY_NAME=${CLOUDINARY_NAME}
           MONGODB_URI=${MONGODB_URI}
+          PATH= ${PATH}
           EOF
           echo ".env file created"
 
