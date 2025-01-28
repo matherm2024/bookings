@@ -42,6 +42,13 @@ app.use('/bookings/frontend', express.static(path.join(__dirname, 'bookings', 'f
 app.get('/bookings/frontend/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'bookings', 'frontend', 'index.html'));
 });
+process.on('uncaughtException', (err) => {
+  console.error('Unhandled Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
 app.get(`${baseURL}/status`, (req, res) => {
   try {
