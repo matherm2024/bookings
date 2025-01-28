@@ -65,10 +65,10 @@ jobs:
         run: |
           cd backend
           npm install
-          npm install
+          npm install--production
           
-          
-          run: |
+      - name: Verify start script    
+        run: |
             cd backend
             zip -r node-app.zip .
             ls -la
