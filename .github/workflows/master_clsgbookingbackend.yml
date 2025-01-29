@@ -114,6 +114,9 @@ jobs:
           app-name: 'CLSGBookingBackend'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_274E6BD4D1BA4E3D85D55F612CBF3449 }}
           package: ./node-app.zip
-          startup-command: |
-            pm2 start server.js --name "api"
-            cp index.html /home/site/wwwroot/
+      - name: Set Startup Command in Azure Web App
+        uses: azure/cli@v1
+        with:
+          inlineScript: |
+            az webapp config set --resource-group CitySchools_Bookings_System --name CLSGBookingBackend --startup-file "npm start"
+
