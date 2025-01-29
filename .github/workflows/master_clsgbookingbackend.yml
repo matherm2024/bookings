@@ -111,8 +111,9 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app_location: "index.html"   
-          api_location: "server.js" 
           app-name: 'CLSGBookingBackend'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_274E6BD4D1BA4E3D85D55F612CBF3449 }}
           package: ./node-app.zip
+          startup-command: |
+            pm2 start server.js --name "api"
+            cp index.html /home/site/wwwroot/
