@@ -29,6 +29,8 @@ jobs:
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
           cd frontend
+          rm -f .env  # Delete the old .env file if it exists
+          touch .env  # Create a new .env file
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created with VITE-prefixed variables"
