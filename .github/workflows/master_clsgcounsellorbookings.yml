@@ -24,7 +24,7 @@ jobs:
 
       - name: Clean old build files
         run: |
-          cd bookings/frontend
+          cd frontend
           rm -rf node_modules build .env  # Delete old build files and dependencies
 
 
@@ -34,7 +34,7 @@ jobs:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
-          cd bookings/frontend
+          cd frontend
           rm -f .env  # Delete the old .env file if it exists
           touch .env  # Create a new .env file
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
