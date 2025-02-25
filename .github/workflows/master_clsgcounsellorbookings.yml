@@ -45,10 +45,10 @@ jobs:
           npm run build 
           npm test --if-present 
           
-      - name: Ensure .env is in the deployment package
-        run: |
-          cp frontend/build/.env ./frontend/build/
-          cd frontend/build/
+   #   - name: Ensure .env is in the deployment package
+    #    run: |
+    #      cp frontend/build/.env ./frontend/build/
+    #      cd frontend/build/
       
       - name: Verify final artifact structure
         run: |
