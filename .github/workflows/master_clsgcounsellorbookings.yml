@@ -47,7 +47,13 @@ jobs:
           
       - name: Ensure .env is in the deployment package
         run: |
-          mv frontend/build/.env ./frontend/build/.env  # Move .env to build folder before deployment
+          cd frontend/build
+          if [ -f .env ]; then
+            echo ".env file exists and is ready for deployment"
+          else
+            echo "Error: .env file not found"
+            exit 1
+          fi
       
       - name: Verify final artifact structure
         run: |
