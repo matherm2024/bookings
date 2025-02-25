@@ -47,7 +47,7 @@ jobs:
           
       - name: Ensure .env is in the deployment package
         run: |
-          cp frontend/build/.env frontend/build/.env  # Copy .env to build folder before deployment
+          cp frontend/build/.env ./frontend/build/
       
       - name: Verify final artifact structure
         run: |
