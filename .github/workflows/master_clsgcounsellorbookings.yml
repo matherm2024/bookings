@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x' # Use Node.js 20.x
-
-      - name: Check if .env exists before deletion
+      - name: Verify build output
         run: |
-          cd frontend
-          ls -la  # List all files in frontend
+          cd frontend/build
+          ls -la  # Check if .env is inside the build folder
+
           
       - name: Clean old build files
         run: |
