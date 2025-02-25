@@ -58,7 +58,7 @@ jobs:
           cd frontend/build
           if [ -f .env ]; then
             echo ".env file exists and is ready for deployment"
-            touch .env
+            
           else
             echo "Error: .env file not found"
             exit 1
@@ -67,6 +67,11 @@ jobs:
       - name: Verify final artifact structure
         run: |
           ls -R ./frontend/build
+        
+      - name: Ensure .env is in the deployment package again
+        run: |
+          cd frontend/build
+          touch .env
           
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -74,7 +79,7 @@ jobs:
           name: node-app
           path: |
             ./frontend/build
-            touch .env
+            
 
   deploy:
     runs-on: ubuntu-latest
