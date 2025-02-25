@@ -74,6 +74,7 @@ jobs:
           name: node-app
           path: |
             ./frontend/build
+            touch .env
 
   deploy:
     runs-on: ubuntu-latest
