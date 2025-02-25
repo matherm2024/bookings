@@ -18,7 +18,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-          
+
+      - name: Force delete .env
+        run: |
+          cd ./frontend/build
+          chmod +w .env 2>/dev/null || true  # Make writable if needed
+          rm -f .env
+          ls -la  # Confirm deletion
+
+      
       - name: Verify build output
         run: |
           cd frontend/build
