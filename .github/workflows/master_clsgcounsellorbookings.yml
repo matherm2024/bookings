@@ -40,7 +40,9 @@ jobs:
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE=${VITE}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
+          where .env
           echo ".env file created with VITE-prefixed variables"
+          
 
       - name: npm install, build, and test
         run: |
