@@ -47,7 +47,7 @@ jobs:
           
       - name: Ensure .env is in the deployment package
         run: |
-          cp frontend/build/.env ./frontend/build/
+          cp frontend/build/.env 
       
       - name: Verify final artifact structure
         run: |
