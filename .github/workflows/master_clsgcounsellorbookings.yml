@@ -25,7 +25,7 @@ jobs:
       - name: Clean old build files
         run: |
           cd frontend
-          rm -rf  build .env  # Delete old build files and dependencies
+          rm -rf   .env  # Delete old build files and dependencies
 
 
   
@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .bookings/frontend/build
+          path: .frontend/build
 
   deploy:
     runs-on: ubuntu-latest
