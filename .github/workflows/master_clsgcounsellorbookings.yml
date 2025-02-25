@@ -68,10 +68,7 @@ jobs:
         run: |
           ls -R ./frontend/build
         
-      - name: Ensure .env is in the deployment package again
-        run: |
-          cd frontend/build
-          touch .env
+
           
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
