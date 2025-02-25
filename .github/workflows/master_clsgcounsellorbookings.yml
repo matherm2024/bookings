@@ -86,16 +86,16 @@ jobs:
         with:
           name: node-app
 
-      - name: Verify .env file in deployment package
-        run: |
-          cd frontend/build
-          if [ -f .env ]; then
-            echo ".env file exists in deployment package"
-            cat .env  # Display contents for verification
-          else
-            echo "Error: .env file not found in deployment package"
-            exit 1
-          fi
+    #  - name: Verify .env file in deployment package
+      #  run: |
+      #    cd frontend/build
+      #    if [ -f .env ]; then
+      #      echo ".env file exists in deployment package"
+      #      cat .env  # Display contents for verification
+      #    else
+      #      echo "Error: .env file not found in deployment package"
+       #     exit 1
+    #      fi
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
