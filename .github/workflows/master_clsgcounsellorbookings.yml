@@ -58,6 +58,7 @@ jobs:
           cd frontend/build
           if [ -f .env ]; then
             echo ".env file exists and is ready for deployment"
+            touch .env
           else
             echo "Error: .env file not found"
             exit 1
