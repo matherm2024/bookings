@@ -25,7 +25,7 @@ jobs:
       - name: Clean old build files
         run: |
           cd frontend
-          rm -rf node_modules build .env  # Delete old build files and dependencies
+          rm -rf  build .env  # Delete old build files and dependencies
 
 
   
@@ -43,7 +43,7 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd bookings/frontend
+          cd frontend
           npm install
           npm run build 
           npm test --if-present 
