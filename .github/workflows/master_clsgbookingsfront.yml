@@ -37,17 +37,6 @@ jobs:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
-          cd bookings/frontend/build
-          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
-          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
-          echo ".env file created with VITE-prefixed variables"
-          
-        # Step 4.5: Create .env file for Vite in fronend as well
-      - name: Create .env file for Vite
-        env:
-           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
-        run: |
           cd bookings/frontend
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
@@ -67,9 +56,7 @@ jobs:
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
           cd bookings/frontend/build
-          touch .env
-          chmod 777 .env  # Ensure write permissions
-          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
+          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created inside build folder"
           ls -la  # Verify file existence
