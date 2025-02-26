@@ -61,6 +61,20 @@ jobs:
           echo ".env file created inside build folder"
           ls -la  # Verify file existence
           cat .env || echo "Error: .env file not created!"
+          
+      # Step 6.5: Recreate .env inside `dist/` (After Build)
+      - name: Ensure .env is inside the build folder
+        env:
+           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+        run: |
+          cd bookings/frontend/dist
+          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
+          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
+          echo ".env file created inside build folder"
+          ls -la  # Verify file existence
+          cat .env || echo "Error: .env file not created!"
+    
 
       # Step 7: Debug the build structure
       - name: Debug artifact structure
