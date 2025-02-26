@@ -104,30 +104,31 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
+
+          
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: node-app
 
-    #  - name: Verify .env file in deployment package
-      #  run: |
-      #    cd frontend/build
-      #    if [ -f .env ]; then
-      #      echo ".env file exists in deployment package"
-      #      cat .env  # Display contents for verification
-      #    else
-      #      echo "Error: .env file not found in deployment package"
-       #     exit 1
-    #      fi
 
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
+
+
+      - name: Ensure .env exists before uploading
+        run: |
+          if [ ! -f frontend/build/.env ]; then
+            echo "Recreating .env before upload..."
+            echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > frontend/build/.env
+            echo "VITE=${VITE}" >> frontend/build/.env
+            echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> frontend/build/.env
+          fi
+          ls -la frontend/build  # Check contents before uploading
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
         with:
-          app-name: 'CLSGCounsellorBookings'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: .
+          name: node-app
+          path: .
 
