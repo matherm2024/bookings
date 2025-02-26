@@ -90,6 +90,17 @@ jobs:
         run: |
           ls -R ./frontend
           
+      - name: Ensure .env exists before uploading
+        run: |
+          if [ ! -f frontend/build/.env ]; then
+            echo "Recreating .env before upload..."
+            echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > frontend/build/.env
+            echo "VITE=${VITE}" >> frontend/build/.env
+            echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> frontend/build/.env
+          fi
+          ls -la frontend/build  # Check contents before uploading
+
+          
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -116,15 +127,7 @@ jobs:
 
 
 
-      - name: Ensure .env exists before uploading
-        run: |
-          if [ ! -f frontend/build/.env ]; then
-            echo "Recreating .env before upload..."
-            echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > frontend/build/.env
-            echo "VITE=${VITE}" >> frontend/build/.env
-            echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> frontend/build/.env
-          fi
-          ls -la frontend/build  # Check contents before uploading
+ 
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
