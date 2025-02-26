@@ -59,7 +59,7 @@ jobs:
       # Step 7: Debug the build structure
       - name: Debug artifact structure
         run: |
-          ls -R ./bookings/frontend/dist | head -n 100
+          ls -R ./bookings/frontend/build | head -n 100
 
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
@@ -71,7 +71,7 @@ jobs:
       # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
         run: |
-          ls -R ./bookings/frontend/dist
+          ls -R ./bookings/frontend/build
 
       # Step 10: Upload artifact for deployment job
       - name: Upload artifact for deployment job
