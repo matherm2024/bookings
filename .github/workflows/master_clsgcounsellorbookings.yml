@@ -31,7 +31,28 @@ jobs:
           cd frontend/build
           ls -la
 
-      - name: Create .env file for Vite
+ #     - name: Create .env file for Vite
+  #      env:
+   #        FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+    #       VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+     #      VITE: vite
+    #    run: |
+    #      cd frontend/build
+    #      touch .env
+    #      echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
+    #      echo "VITE=${VITE}" >> .env
+    #      echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
+    #      echo ".env file created with VITE-prefixed variables"
+    #      ls -la  # Verify .env file creation
+
+      - name: npm install, build, and test
+        run: |
+          cd frontend
+          npm install
+          npm run build 
+          npm test --if-present 
+
+      - name: Recreate .env file after build
         env:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
@@ -42,15 +63,9 @@ jobs:
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE=${VITE}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
-          echo ".env file created with VITE-prefixed variables"
-          ls -la  # Verify .env file creation
-
-      - name: npm install, build, and test
-        run: |
-          cd frontend
-          npm install
-          npm run build 
-          npm test --if-present 
+          echo ".env file recreated after build"
+          ls -la  # Verify .env is there
+ 
           
       - name: Ensure .env is in the deployment package
         run: |
