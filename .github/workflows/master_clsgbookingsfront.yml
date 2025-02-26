@@ -1,10 +1,11 @@
 name: Build and deploy Node.js app to Azure Web App - clsgbookingsfront
 
+
 on:
   push:
     branches:
       - master
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,7 +15,7 @@ jobs:
       # Step 1: Checkout code
       - uses: actions/checkout@v4
         with:
-          path: bookings 
+          path: bookings
 
       # Step 2: Debug directory structure
       - name: Debug directory structure
@@ -31,13 +32,14 @@ jobs:
       # Step 4: Create .env file for Vite (Before Build)
       - name: Create .env file for Vite
         env:
-           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
           cd bookings/frontend
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created with VITE-prefixed variables"
+          cat .env
 
       # Step 5: Install dependencies and build
       - name: npm install and build
@@ -49,34 +51,33 @@ jobs:
       # Step 6: Recreate .env inside `build/` (After Build)
       - name: Ensure .env is inside the build folder
         env:
-           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
           cd bookings/frontend/build
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created inside build folder"
-          ls -la  # Verify file existence
-          cat .env || echo "Error: .env file not created!"
+          ls -la
+          cat .env
 
       # Step 7: Debug the build structure
       - name: Debug artifact structure
         run: |
           ls -R ./bookings/frontend/build
-          cat ./bookings/frontend/build/.env || echo "No .env file found!"
 
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
           cd ./bookings/frontend/build
-          cp ../.env .  # Copy .env from the frontend directory to the build directory
-          ls -la  # Verify that .env is in the build directory
+          cp ../.env .
+          ls -la
 
       # Step 9: Debug file existence before upload
       - name: Debug file existence before upload
         run: |
           ls -la ./bookings/frontend/build
-          cat ./bookings/frontend/build/.env || echo "Error: .env file missing before upload!"
+          cat ./bookings/frontend/build/.env
 
       # Step 10: Upload artifact for deployment job
       - name: Upload artifact for deployment job
@@ -87,13 +88,6 @@ jobs:
             ./bookings/frontend/build
             ./bookings/frontend/.env
 
-
-      # Step 10.5: Verify artifact contents
-      - name: Verify artifact contents
-        run: |
-          ls -R ./bookings/frontend/build
-          cat ./bookings/frontend/build/.env || echo "Error: .env file missing in artifact!"
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -101,7 +95,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Required for requesting the JWT
+      id-token: write
 
     steps:
       # Step 11: Download artifact from build job
@@ -115,14 +109,14 @@ jobs:
         run: |
           pwd
           ls -R
-          cat ./.env || echo "Warning: .env file missing after download!"
+          cat ./.env
 
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A4D65CCC9686424884BAD17614DBC8C0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D023D18A0492409D884C74A202791ACA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F578E15C12644C0C8ED7B0DC0F3B3C0F }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
@@ -131,3 +125,4 @@ jobs:
           app-name: 'clsgbookingsfront'
           slot-name: 'Production'
           package: .
+
