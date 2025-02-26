@@ -3,7 +3,6 @@
 
 name: Build and deploy Node.js app to Azure Web App - clsgbookingsfront
 
-
 on:
   push:
     branches:
@@ -64,22 +63,6 @@ jobs:
           echo ".env file created inside build folder"
           ls -la  # Verify file existence
           cat .env || echo "Error: .env file not created!"
-          
-            # Step 6.5 : Recreate .env inside frontend 
-      - name: Ensure .env is inside the build folder
-        env:
-           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
-        run: |
-          cd bookings/frontend
-          touch .env
-          chmod 777 .env  # Ensure write permissions
-          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
-          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" > .env
-          echo ".env file created inside build folder"
-          ls -la  # Verify file existence
-          cat .env || echo "Error: .env file not created!"
-
 
       # Step 7: Debug the build structure
       - name: Debug artifact structure
@@ -87,13 +70,12 @@ jobs:
           ls -R ./bookings/frontend/build
           cat ./bookings/frontend/build/.env || echo "No .env file found!"
 
-
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
-           cp ./bookings/frontend/package.json ./bookings/frontend/.env
-           cd ./bookings/frontend/build
-           
+          cd ./bookings/frontend/build
+          cp ../.env .  # Copy .env from the frontend directory to the build directory
+          ls -la  # Verify that .env is in the build directory
 
       # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
@@ -107,14 +89,6 @@ jobs:
         with:
           name: node-app
           path: ./bookings/frontend/build
-
-                    
-   # Step 12: Debug downloaded artifact
-      - name: Debug downloaded artifact
-        run: |
-           pwd
-           ls -R
-           cat ./bookings/frontend/build/.env || echo "Warning: .env file missing after download!"
 
   deploy:
     runs-on: ubuntu-latest
@@ -137,8 +111,8 @@ jobs:
         run: |
           pwd
           ls -R
+          cat ./.env || echo "Warning: .env file missing after download!"
 
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -153,4 +127,3 @@ jobs:
           app-name: 'clsgbookingsfront'
           slot-name: 'Production'
           package: .
-          
