@@ -7,7 +7,7 @@ export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
     const currencySymbol = '£'
-    const backendUrl = 'http://clsgbookingdb.uksouth.cloudapp.azure.com'
+    const backendUrl = 'http://clsgbookingdb.uksouth.cloudapp.azure.com:8443'
 
     const [doctors, setDoctors] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
@@ -19,7 +19,7 @@ const AppContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com/api/doctor/list')
+            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com:8443/api/doctor/list')
             if (data.success) {
                 setDoctors(data.doctors)
             } else {
@@ -37,7 +37,7 @@ const AppContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com/api/user/get-profile', { headers: { token } })
+            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com:8443/api/user/get-profile', { headers: { token } })
 
             if (data.success) {
                 setUserData(data.userData)
