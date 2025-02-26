@@ -61,7 +61,12 @@ jobs:
             echo "Error: .env file not found"
             exit 1
           fi
-      
+          
+      - name: Move .env file to deployment package
+        run: |
+          mv frontend/build/.env frontend/.env
+          ls -la frontend/  # Verify .env is moved correctly
+   
       - name: Verify final artifact structure
         run: |
           ls -R ./frontend/build
@@ -72,6 +77,7 @@ jobs:
           name: node-app
           path: |
             ./frontend/build
+        
 
   deploy:
     runs-on: ubuntu-latest
@@ -104,4 +110,4 @@ jobs:
           app-name: 'CLSGCounsellorBookings'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: ./frontend/build
+          package: .
