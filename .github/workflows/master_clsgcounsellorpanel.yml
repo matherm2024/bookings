@@ -1,5 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - clsgbookingsfront
-
+name: Build and deploy Node.js app to Azure Web App - CLSGCounsellorPanel
 
 on:
   push:
@@ -28,14 +27,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-
-      # Step 4: Create .env file for Vite (Before Build)
+      # Step 4: Create .env file for Vite
       - name: Create .env file for Vite
         env:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
            VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
-          cd bookings/frontend
+          cd bookings/admin
+          echo "FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
           echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
           echo ".env file created with VITE-prefixed variables"
@@ -43,52 +42,41 @@ jobs:
       # Step 5: Install dependencies and build
       - name: npm install and build
         run: |
-          cd bookings/frontend
+          cd bookings/admin
           npm install
           npm run build
 
-      # Step 6: Recreate .env inside `build/` (After Build)
-      - name: Ensure .env is inside the build folder
-        env:
-           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+      # Step 6: Run tests (optional)
+      - name: Run tests
         run: |
-          cd bookings/frontend/build
-          touch .env
-          chmod 777 .env  # Ensure write permissions
-          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
-          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
-          echo ".env file created inside build folder"
-          ls -la  # Verify file existence
-          cat .env || echo "Error: .env file not created!"
-          
+          cd bookings/admin
+          npm test --if-present
+
       # Step 7: Debug the build structure
       - name: Debug artifact structure
         run: |
-          ls -R ./bookings/frontend/build
-          cat ./bookings/frontend/build/.env || echo "No .env file found!"
-
+          ls -R ./bookings/admin/dist | head -n 100
 
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
-          cd ./bookings/frontend/build
-          cp ../.env .  # Copy .env from the frontend directory to the build directory
-          ls -la  # Verify that .env is in the build directory
+           cp ./bookings/admin/package.json ./bookings/admin/web.config ./bookings/admin/.env ./bookings/admin/dist/
+           cd ./bookings/admin/dist
+           npm install --omit=dev # Ensure runtime dependencies
+
 
       # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
         run: |
-          ls -R ./bookings/frontend/build
-          cat ./bookings/frontend/build/.env || echo "Error: No .env file found!"
+          ls -R ./bookings/admin/dist
 
       # Step 10: Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: ./bookings/frontend/build
-          
+          path: ./bookings/admin/dist
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -110,19 +98,21 @@ jobs:
         run: |
           pwd
           ls -R
-          cat ./.env || echo "Warning: .env file missing after download!"
-          
+
+      # Step 13: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A4D65CCC9686424884BAD17614DBC8C0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D023D18A0492409D884C74A202791ACA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F578E15C12644C0C8ED7B0DC0F3B3C0F }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E04FD9C42C9445689B0FB60B08F14F48 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A0C33C26F9994F88A0B1D09690B8DF43 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_11E868E4D5CE4BDB8E7D87A69DFA5E88 }}
 
-      - name: 'Deploy to Azure Web App'
+      # Step 14: Deploy to Azure Web App
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'clsgbookingsfront'
-          slot-name: 'Production'
-          package: .          
+          app-name: 'CLSGCounsellorPanel'
+          package: ./
+        
+          
