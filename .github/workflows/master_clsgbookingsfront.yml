@@ -84,7 +84,7 @@ jobs:
         with:
           name: node-app
           path: |
-            ./bookings/frontend/build/**
+            ./bookings/frontend/build/{*,.*}
 
 
       # Step 10.5: Verify artifact contents
@@ -129,4 +129,4 @@ jobs:
         with:
           app-name: 'clsgbookingsfront'
           slot-name: 'Production'
-          package: ./build
+          package: .
