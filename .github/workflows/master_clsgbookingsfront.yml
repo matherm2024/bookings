@@ -34,7 +34,7 @@ jobs:
 
       - name: Prepare artifact with dependencies
         run: |
-          cp ./bookings/frontend/package.json ./bookings/frontend/.env 
+          cp ./bookings/frontend/package.json ./bookings/frontend/.env ./bookings/frontend/.env.local
           cd ./bookings/frontend/build
 
 
