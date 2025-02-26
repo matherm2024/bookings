@@ -111,3 +111,8 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: .
+
+      - name: Verify deployed .env file
+        run: |
+          ls -la /home/site/wwwroot/  # Azure App Service default path
+
