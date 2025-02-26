@@ -86,6 +86,10 @@ jobs:
         run: |
           ls -R ./frontend/build
           
+      - name: Verify frontend structure
+        run: |
+          ls -R ./frontend
+          
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
