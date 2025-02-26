@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: bookings # Matches your project structure
+          path: bookings
 
       - name: Debug directory structure
         run: |
@@ -27,15 +27,11 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          cd bookings/frontend # Adjust to where `package.json` exists
+          cd bookings/frontend
+          echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" > .env
           npm install
-          npm run build 
-          npm test --if-present 
-
-      - name: Prepare artifact with dependencies
-        run: |
-          cp ./bookings/frontend/package.json ./bookings/frontend/.env 
-          cd ./bookings/frontend/build
+          npm run build
+          npm test --if-present
 
       - name: Verify final artifact structure
         run: |
@@ -54,7 +50,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # Required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
@@ -76,8 +72,8 @@ jobs:
 
       - name: Clear Azure Web App cache
         run: |
-          az webapp config appsettings set --name clsgbookingsfront --resource-group CitySchools_Bookings_System --settings WEBSITE_LOCAL_CACHE_OPTION=Never
-          az webapp restart --name clsgbookingsfront --resource-group CitySchools_Bookings_System
+          az webapp config appsettings set --name clsgbookingsfront --resource-group <your-resource-group> --settings WEBSITE_LOCAL_CACHE_OPTION=Never
+          az webapp restart --name clsgbookingsfront --resource-group <your-resource-group>
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
@@ -86,4 +82,3 @@ jobs:
           app-name: 'clsgbookingsfront'
           slot-name: 'Production'
           package: .
-
