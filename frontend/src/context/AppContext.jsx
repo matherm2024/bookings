@@ -19,7 +19,7 @@ const AppContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com /api/doctor/list')
+            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com/api/doctor/list')
             if (data.success) {
                 setDoctors(data.doctors)
             } else {
