@@ -72,8 +72,8 @@ jobs:
 
       - name: Clear Azure Web App cache
         run: |
-          az webapp config appsettings set --name clsgbookingsfront --resource-group <your-resource-group> --settings WEBSITE_LOCAL_CACHE_OPTION=Never
-          az webapp restart --name clsgbookingsfront --resource-group <your-resource-group>
+          az webapp config appsettings set --name clsgbookingsfront --resource-group CitySchools_Bookings_System --settings WEBSITE_LOCAL_CACHE_OPTION=Never
+          az webapp restart --name clsgbookingsfront --resource-group CitySchools_Bookings_System
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
