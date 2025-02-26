@@ -37,7 +37,7 @@ const AppContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com//api/user/get-profile', { headers: { token } })
+            const { data } = await axios.get('http://clsgbookingdb.uksouth.cloudapp.azure.com/api/user/get-profile', { headers: { token } })
 
             if (data.success) {
                 setUserData(data.userData)
