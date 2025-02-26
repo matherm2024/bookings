@@ -64,7 +64,7 @@ jobs:
           
       - name: Move .env file to deployment package
         run: |
-          mv frontend/build/.env frontend/.env
+          cp frontend/build/.env frontend/.env
           ls -la frontend/  # Verify .env is moved correctly
    
       - name: Verify final artifact structure
@@ -110,9 +110,5 @@ jobs:
           app-name: 'CLSGCounsellorBookings'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: .
-
-      - name: Verify deployed .env file
-        run: |
-          ls -la /home/site/wwwroot/  # Azure App Service default path
+          package: ./frontend/build
 
