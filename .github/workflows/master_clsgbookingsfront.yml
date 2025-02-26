@@ -79,6 +79,7 @@ jobs:
       - name: Verify final artifact structure
         run: |
           ls -R ./bookings/frontend/build
+          cat ./bookings/frontend/build/.env || echo "Error: No .env file found!"
 
       # Step 10: Upload artifact for deployment job
       - name: Upload artifact for deployment job
@@ -86,6 +87,14 @@ jobs:
         with:
           name: node-app
           path: ./bookings/frontend/build
+
+                    
+   # Step 12: Debug downloaded artifact
+      - name: Debug downloaded artifact
+        run: |
+           pwd
+           ls -R
+           cat ./bookings/frontend/build/.env || echo "Warning: .env file missing after download!"
 
   deploy:
     runs-on: ubuntu-latest
