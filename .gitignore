@@ -23,7 +23,7 @@ dist-ssr
 *.sw?
 
 # Ignore environment files
-frontend/.env
+
 backend/.env
 admin/.env
 
