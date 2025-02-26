@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - CLSGCounsellorBookings
 
 on:
@@ -9,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Use Ubuntu instead of Windows
 
     steps:
       - uses: actions/checkout@v4
@@ -17,33 +20,9 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '20.x' # Use Node.js 20.x
 
-      - name: Force delete .env
-        run: |
-          cd ./frontend/build
-          chmod +w .env 2>/dev/null || true  # Make writable if needed
-          rm -f .env
-          ls -la  # Confirm deletion
 
-      - name: Verify build output
-        run: |
-          cd frontend/build
-          ls -la
-
- #     - name: Create .env file for Vite
-  #      env:
-   #        FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-    #       VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
-     #      VITE: vite
-    #    run: |
-    #      cd frontend/build
-    #      touch .env
-    #      echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
-    #      echo "VITE=${VITE}" >> .env
-    #      echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
-    #      echo ".env file created with VITE-prefixed variables"
-    #      ls -la  # Verify .env file creation
 
       - name: npm install, build, and test
         run: |
@@ -51,63 +30,12 @@ jobs:
           npm install
           npm run build 
           npm test --if-present 
-
-      - name: Recreate .env file after build
-        env:
-           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
-           VITE: vite
-        run: |
-          cd frontend/build
-          touch .env
-          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
-          echo "VITE=${VITE}" >> .env
-          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
-          echo ".env file recreated after build"
-          ls -la  # Verify .env is there
- 
-          
-      - name: Ensure .env is in the deployment package
-        run: |
-          cd frontend/build
-          if [ -f .env ]; then
-            echo ".env file exists and is ready for deployment"
-          else
-            echo "Error: .env file not found"
-            exit 1
-          fi
-          
-      - name: Move .env file to deployment package
-        run: |
-          cp frontend/build/.env frontend/.env
-          ls -la frontend/  # Verify .env is moved correctly
-   
-      - name: Verify final artifact structure
-        run: |
-          ls -R ./frontend/build
-          
-      - name: Verify frontend structure
-        run: |
-          ls -R ./frontend
-          
-      - name: Ensure .env exists before uploading
-        run: |
-          if [ ! -f frontend/build/.env ]; then
-            echo "Recreating .env before upload..."
-            echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > frontend/build/.env
-            echo "VITE=${VITE}" >> frontend/build/.env
-            echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> frontend/build/.env
-          fi
-          ls -la frontend/build  # Check contents before uploading
-
-          
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: |
-            ./frontend/build
-        
+          path: ./frontend/build
 
   deploy:
     runs-on: ubuntu-latest
@@ -116,13 +44,17 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-
-          
     steps:
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
         with:
           name: node-app
-          path: ./frontend/build
 
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
+        with:
+          app-name: 'CLSGCounsellorBookings'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
