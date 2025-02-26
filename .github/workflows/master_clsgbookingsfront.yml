@@ -71,7 +71,7 @@ jobs:
       # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
         run: |
-          ls -R ./bookings/frontend/build
+          ls -R ./bookings/frontend/dist
 
       # Step 10: Upload artifact for deployment job
       - name: Upload artifact for deployment job
