@@ -28,7 +28,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           cd bookings/frontend
-          echo "REACT_APP_BACKEND_URL=${{ secrets.REACT_APP_BACKEND_URL }}" > .env
+          echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" > .env
           npm install
           npm run build
           npm test --if-present
