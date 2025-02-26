@@ -104,4 +104,4 @@ jobs:
           app-name: 'CLSGCounsellorBookings'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: ./frontend
+          package: ./frontend/build
