@@ -74,8 +74,8 @@ jobs:
           cd bookings/frontend
           touch .env
           chmod 777 .env  # Ensure write permissions
-          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
-          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
+          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" > .env
+          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" > .env
           echo ".env file created inside build folder"
           ls -la  # Verify file existence
           cat .env || echo "Error: .env file not created!"
