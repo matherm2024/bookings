@@ -7,7 +7,7 @@ export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
     const currencySymbol = '£'
-    const backendUrl = 'http://clsgbookingdb.uksouth.cloudapp.azure.com:8443'
+    const backendUrl = 'https://clsgbookingdb.uksouth.cloudapp.azure.com:8443'
 
     const [doctors, setDoctors] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
