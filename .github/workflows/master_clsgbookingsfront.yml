@@ -84,8 +84,8 @@ jobs:
         with:
           name: node-app
           path: |
-            ./bookings/frontend/build
-            ./bookings/frontend/build/.env
+            ./bookings/frontend/build/**
+
 
       # Step 10.5: Verify artifact contents
       - name: Verify artifact contents
