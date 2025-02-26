@@ -64,7 +64,7 @@ jobs:
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
-           cp ./bookings/frontend/package.json ./bookings/frontend/web.config ./bookings/frontend/.env ./bookings/frontend/dist/
+           cp ./bookings/frontend/package.json ./bookings/frontend/.env
            cd ./bookings/frontend/build
            npm install --omit=dev # Ensure runtime dependencies
 
