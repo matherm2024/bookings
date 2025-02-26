@@ -59,14 +59,14 @@ jobs:
       # Step 7: Debug the build structure
       - name: Debug artifact structure
         run: |
-          ls -R ./bookings/admin/dist | head -n 100
+          ls -R ./bookings/frontend/dist | head -n 100
 
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
         run: |
            cp ./bookings/frontend/package.json ./bookings/frontend/.env
            cd ./bookings/frontend/build
-           npm install --omit=dev # Ensure runtime dependencies
+           
 
       # Step 9: Verify final artifact structure
       - name: Verify final artifact structure
