@@ -15,8 +15,6 @@ jobs:
         with:
           path: bookings # Matches your project structure
 
-    
-
       - name: Debug directory structure
         run: |
           pwd
@@ -38,7 +36,6 @@ jobs:
         run: |
           cp ./bookings/frontend/package.json ./bookings/frontend/.env 
           cd ./bookings/frontend/build
-
 
       - name: Verify final artifact structure
         run: |
@@ -76,6 +73,11 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A4D65CCC9686424884BAD17614DBC8C0 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D023D18A0492409D884C74A202791ACA }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F578E15C12644C0C8ED7B0DC0F3B3C0F }}
+
+      - name: Clear Azure Web App cache
+        run: |
+          az webapp config appsettings set --name clsgbookingsfront --resource-group CitySchools_Bookings_System --settings WEBSITE_LOCAL_CACHE_OPTION=Never
+          az webapp restart --name clsgbookingsfront --resource-group CitySchools_Bookings_System
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
