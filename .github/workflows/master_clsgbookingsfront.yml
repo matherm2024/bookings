@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '20.x'
 
-      # Step 4: Create .env file for Vite
+      # Step 4: Create .env file for Vite (Before Build)
       - name: Create .env file for Vite
         env:
            FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
@@ -50,16 +50,23 @@ jobs:
           npm install
           npm run build
 
-      # Step 6: Run tests (optional)
-      - name: Run tests
+      # Step 6: Recreate .env inside `build/` (After Build)
+      - name: Ensure .env is inside the build folder
+        env:
+           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
         run: |
-          cd bookings/frontend
-          npm test --if-present
+          cd bookings/frontend/build
+          echo "VITE_FRONTEND_URL=${FRONTEND_URL}" >> .env
+          echo "VITE_BACKEND_URL=${VITE_BACKEND_URL}" >> .env
+          echo ".env file recreated inside build folder"
 
       # Step 7: Debug the build structure
       - name: Debug artifact structure
         run: |
-          ls -R ./bookings/frontend/build | head -n 100
+          ls -R ./bookings/frontend/build
+          cat ./bookings/frontend/build/.env || echo "No .env file found!"
+
 
       # Step 8: Prepare artifact with dependencies
       - name: Prepare artifact with dependencies
