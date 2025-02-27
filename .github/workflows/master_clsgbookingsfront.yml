@@ -46,7 +46,6 @@ jobs:
           find . -type f -exec chmod 644 {} \;
           find . -type d -exec chmod 755 {} \;
 
-
       - name: Verify modified files
         run: |
           cd bookings/frontend/build
@@ -94,10 +93,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D023D18A0492409D884C74A202791ACA }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F578E15C12644C0C8ED7B0DC0F3B3C0F }}
 
-      - name: Restart Azure Web App
-        run: |
-          az webapp restart --name clsgbookingsfront --resource-group CitySchools_Bookings_System
-
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
@@ -105,3 +100,7 @@ jobs:
           app-name: 'clsgbookingsfront'
           slot-name: 'Production'
           package: ./build
+
+      - name: Restart Azure Web App
+        run: |
+          az webapp restart --name clsgbookingsfront --resource-group CitySchools_Bookings_System
