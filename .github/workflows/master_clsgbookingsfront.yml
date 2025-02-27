@@ -35,33 +35,36 @@ jobs:
           npm run build
           npm test --if-present
 
-      - name: Copy package.json and package-lock.json to build folder
+      - name: Copy package.json and package-lock.json to dist folder
         run: |
-          cp bookings/frontend/package.json bookings/frontend/build/
-          cp bookings/frontend/package-lock.json bookings/frontend/build/
+          cp bookings/frontend/package.json bookings/frontend/dist/
+          cp bookings/frontend/package-lock.json bookings/frontend/dist/
+          cp bookings/frontend/web.config bookings/frontend/dist/
+          cp bookings/frontend/.env bookings/frontend/dist/
+          cp bookings/frontend/staticwebapp.config.json bookings/frontend/dist/
 
       - name: Set correct file permissions
         run: |
-          cd bookings/frontend/build
+          cd bookings/frontend/dist
           find . -type f -exec chmod 644 {} \;
           find . -type d -exec chmod 755 {} \;
 
       - name: Verify modified files
         run: |
-          cd bookings/frontend/build
+          cd bookings/frontend/dist
           ls -lah
           find . -type f -exec sha256sum {} \;
 
-      - name: Zip the build folder
+      - name: Zip the dist folder
         run: |
           cd bookings/frontend
-          zip -r build.zip build
+          zip -r dist.zip dist
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: bookings/frontend/build.zip
+          path: bookings/frontend/dist.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -79,11 +82,11 @@ jobs:
           name: node-app
 
       - name: Unzip artifact
-        run: unzip build.zip -d build
+        run: unzip dist.zip -d dist
 
-      - name: Debug build folder
+      - name: Debug dist folder
         run: |
-          cd build
+          cd dist
           ls -lah
 
       - name: Login to Azure
@@ -99,7 +102,7 @@ jobs:
         with:
           app-name: 'clsgbookingsfront'
           slot-name: 'Production'
-          package: ./build
+          package: ./dist
 
       - name: Restart Azure Web App
         run: |
