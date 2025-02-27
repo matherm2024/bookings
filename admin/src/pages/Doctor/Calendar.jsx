@@ -23,11 +23,12 @@ const Calendar = () => {
 
   // Helper function to format date as a key for appointments lookup
   const formatDateKey = (date) => {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString(); // No padding
+    const month = (date.getMonth() + 1).toString(); // No padding
     const year = date.getFullYear();
     return `${day}_${month}_${year}`;
   };
+
   // Define default period times for each day
   const periodTimes = {
     "Sunday": [],
@@ -287,6 +288,9 @@ const Calendar = () => {
       const dailyAppointments = transformedAppointments[dateKey] || [];
       const dayName = currentDate.toLocaleString('en-US', { weekday: 'long' });
 
+      console.log(`Date: ${dateKey}, Day: ${dayName}, Appointments:`, dailyAppointments);
+      console.log("Daily Appointments for", dateKey, ":", dailyAppointments);
+
       // Get period and lunch times for the current day
       const periodsForToday = periodTimes[dayName];
       const lunchForToday = lunchTimes[dayName];
@@ -316,9 +320,18 @@ const Calendar = () => {
             {periodAppointments.length > 0 ? (
               <div className="multipleAppointments">
                 {periodAppointments.map((appt, idx) => (
-                  <div key={idx} className="appointmentIndicator">
-                    <span>{`Period ${appt.period} (${appt.slotTime}) | Counsellor: ${appt.docData.name} | Meeting With: ${appt.userData.name}`}</span>
+                  <div
+                    key={idx}
+                    className={`appointmentIndicator ${appt.cancelled.cancelled === 'CANCELLED' ? "cancelled" : ""}`}
+                    style={appt.cancelled.cancelled === 'CANCELLED' ? { backgroundColor: "#FF5733", color: "white" } : {}}
+                  >
+                    <span>
+                      {`Period ${appt.period} (${appt.slotTime}) | Counsellor: ${appt.docData.name} | Meeting With: ${appt.userData.name}`}
+                      {appt.cancelled.cancelled === 'CANCELLED' ? " (CANCELLED)" : ""}
+                    </span>
                   </div>
+
+
                 ))}
               </div>
             ) : (
@@ -478,6 +491,11 @@ const Calendar = () => {
   flex-direction: column;
   align-items: stretch; /* Stretch to fill available space */
   gap: 4px; /* Add spacing between appointments */
+}
+.cancelled {
+  background-color: #FF5733 !important; /* Red background */
+  color: white !important;
+  text-decoration: line-through;
 }
 
 .appointmentIndicator {
