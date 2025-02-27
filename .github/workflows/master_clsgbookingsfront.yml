@@ -35,6 +35,11 @@ jobs:
           npm run build
           npm test --if-present
 
+      - name: Copy package.json and package-lock.json to build folder
+        run: |
+          cp bookings/frontend/package.json bookings/frontend/build/
+          cp bookings/frontend/package-lock.json bookings/frontend/build/
+
       - name: Add staticwebapp.config.json
         run: |
           cat <<EOT > bookings/frontend/build/staticwebapp.config.json
