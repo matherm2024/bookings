@@ -11,7 +11,7 @@ const Header = () => {
         </p>
         <div className='felx felx-col md:flex-row items-center gap-3 text-white text-sm font-light'>
           <img className='w-28' src={assets.group_profiles} alt="" />
-          <p>Click on a counsellor and book a slot.</p>
+          <p>Click on a counsellor and book a slot. Testing</p>
         </div>
         <a href="/counsellors" className='flex items-center gap-2 bg-white px-8 py-3 rounded-full text-grey-600 text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300' >
           Book Appointment <img className='w-3' src={assets.arrow_icon} alt="" />
