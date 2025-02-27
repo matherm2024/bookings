@@ -59,32 +59,41 @@ const Calendar = () => {
   // Helper function to find the period based on the day and time
   const getPeriod = (weekday, slotTime) => {
     const timesForDay = periodTimes[weekday];
-    const timesForLunch = lunchTimes[weekday]
-
-
-    // Return null if there are no times for the given weekday
+    const timesForLunch = lunchTimes[weekday];
+  
     if (!timesForDay && timesForLunch) {
       return null;
     }
-
-    // Collect all indices where the slotTime matches, they wanted to include lunchtimes and this is my period work around ednit lunchTimes as needed
-    const indices = [];
+  
+    // Convert time strings to minutes for easier comparison
+    const timeToMinutes = (time) => {
+      const [hours, minutes] = time.split(":").map(Number);
+      return hours * 60 + minutes;
+    };
+  
+    const slotMinutes = timeToMinutes(slotTime);
+  
+    // Find the closest matching period time
+    let closestPeriod = null;
+    let minDifference = Infinity;
+  
     timesForDay.forEach((time, index) => {
-      if (time === slotTime) {
-        indices.push(index + 1)
-      }
-
-    });
-    timesForLunch.forEach((time) => {
-      if (time === slotTime) {
-        indices.push('Lunch')
+      const periodMinutes = timeToMinutes(time);
+      const difference = Math.abs(periodMinutes - slotMinutes);
+  
+      if (difference < minDifference) {
+        minDifference = difference;
+        closestPeriod = index + 1; // Periods are indexed from 1
       }
     });
-
-
-    // Return the array of indices, or null if no matches were found
-    return indices.length > 0 ? indices : null;
+  
+    // Check if it's a lunch time
+    const isLunch = timesForLunch.includes(slotTime) ? "Lunch" : null;
+  
+    // Return closest period or lunch
+    return isLunch ? "Lunch" : closestPeriod;
   };
+  
 
 
   useEffect(() => {
@@ -142,54 +151,28 @@ const Calendar = () => {
   function transformAppointments(allAppointments) {
     if (!Array.isArray(allAppointments)) {
       console.error("Invalid input: allAppointments is not an array", allAppointments);
-      return {}; // Return an empty object if the input is invalid
+      return {};
     }
+  
     const appointmentsMap = {};
-
-
-    console.log("Raw Appointments Count:", allAppointments.length);
-
-    allAppointments.forEach((appointment, index) => {
+  
+    allAppointments.forEach((appointment) => {
       const { slotDate, slotTime, docData, userData, cancelled } = appointment;
-
-      // Log the current appointment
-      console.log(`Processing Appointment ${index + 1}:`, appointment);
-
-      // Normalize and validate slotDate
+  
       const [day, month, year] = slotDate.split("_").map(Number);
       const date = new Date(year, month - 1, day);
-      if (isNaN(date.getTime())) {
-        console.error("Invalid slotDate:", slotDate);
-        return; // Skip invalid dates
-      }
-
-      // Get weekday and period
+      if (isNaN(date.getTime())) return;
+  
       const weekday = date.toLocaleString("en-US", { weekday: "long" });
+  
+      // Find closest period (instead of exact match)
       const period = getPeriod(weekday, slotTime);
-
-
-      if (!period) {
-        console.warn(`No matching period for ${slotTime} on ${weekday}`);
-        return; // Skip unmatched times
-      }
-
-      // Initialize the array for the date if not present
+      if (!period) return;
+  
       if (!appointmentsMap[slotDate]) {
         appointmentsMap[slotDate] = [];
       }
-
-      // Check for existing appointment with the same slotTime and period
-      const existingAppointment = appointmentsMap[slotDate].find(
-        (appt) => appt.slotTime === slotTime && appt.period === period
-      );
-
-      if (existingAppointment) {
-        // Handle the case where an appointment with the same slotTime and period already exists
-        console.warn(`Duplicate appointment found for ${slotTime} on ${slotDate}`);
-
-      }
-
-      // Add appointment to the map
+  
       appointmentsMap[slotDate].push({
         period,
         slotTime,
@@ -197,14 +180,11 @@ const Calendar = () => {
         docData: { name: docData?.name || "Unknown" },
         userData: { name: userData?.name || "Unknown" },
       });
-
-      // Log after adding to the map
-      console.log(`After Adding - Appointments on ${slotDate}:`, appointmentsMap[slotDate]);
     });
-
-    console.log("Final Transformed Appointments Map:", appointmentsMap);
+  
     return appointmentsMap;
   }
+  
 
 
 
