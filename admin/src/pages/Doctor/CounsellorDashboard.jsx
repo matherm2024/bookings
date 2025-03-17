@@ -25,7 +25,66 @@ const CounsellorDashboard = () => {
   const [date, setDate] = useState('')
   const { userData } = useContext(DoctorContext);
 
+  const [personEmail, setPersonEmail] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [holInfo, setHolInfo] = useState([])
+  const [holidays, setHoliday] = useState([])
 
+
+
+
+
+  useEffect(() => {
+    const storedHolInfo = localStorage.getItem('holInfo');
+  
+    if (storedHolInfo) {
+      setHolInfo(JSON.parse(storedHolInfo)); // Load cached holidays
+    }
+  
+    getHoliday(); // Fetch latest holidays from the server
+  }, []);
+  
+  useEffect(() => {
+    if (holidays.length > 0 && docId) {
+      fetchHolInfo();
+    }
+  }, [holidays, docId]);
+  
+  // This will update local storage whenever holidays change
+  useEffect(() => {
+    if (holidays.length !== holInfo.length) {
+      localStorage.setItem('holInfo', JSON.stringify(holidays));
+      setHolInfo(holidays);
+    }
+  }, [holidays]);
+  
+  
+  const getHoliday = async () => {
+
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/doctor/list-holiday`);
+      if (data.success) {
+        setHoliday(data.holidays);
+        console.log('Fetched Holidays:', data.holidays);
+      } else {
+        toast.error(data.message || "Failed to fetch holidays.");
+      }
+    } catch (error) {
+      console.error("Error fetching holidays:", error);
+    }
+  };
+  const fetchHolInfo = () => {
+    if (holidays && Array.isArray(holidays) && docId) {
+      const allHolidaysForDoctor = holidays.filter(item => item.docData._id === docId);
+      setHolInfo(allHolidaysForDoctor);
+      localStorage.setItem('holInfo', JSON.stringify(allHolidaysForDoctor)); // Save to local storage
+    }
+  };
+
+  
+
+  
 
   const fetchDocInfo = async () => {
 
@@ -88,6 +147,60 @@ const CounsellorDashboard = () => {
     return slotDate = `${day}_${month}_${year}`;
 
   }
+    const bookHoliday = async (e) => {
+    e.preventDefault();
+    if (!startDate || !endDate) {
+      toast.error("Please select both start and end dates.");
+      return;
+    }
+    if (endDate <= startDate) {
+      toast.error("End date must be after the start date.");
+      return;
+    }
+
+
+
+    try {
+      // Format the slotDate
+      const sday = new Date(startDate).getDate();
+      const smonth = new Date(startDate).getMonth() + 1;
+      const syear = new Date(startDate).getFullYear();
+      const formattedStartDate = `${sday}_${smonth}_${syear}`;
+
+      const eday = new Date(endDate).getDate();
+      const emonth = new Date(endDate).getMonth() + 1;
+      const eyear = new Date(endDate).getFullYear();
+      const formattedEndDate = `${eday}_${emonth}_${eyear}`;
+
+      console.log(" payload:", { docId, startDate, endDate });
+
+      // Step 1: Book Appointment
+      const { data } = await axios.post(
+        `${backendUrl}/api/doctor/addHoliday`,
+        { docId, endDate: formattedEndDate, startDate: formattedStartDate },
+        { headers: { cToken } }
+      );
+
+      if (!data.success) {
+        toast.error(data.message);
+        return;
+      }
+
+      toast.success(data.message);
+      getCounsellorsData();
+      getDashData();
+
+
+
+      // Clear Inputs
+      setEndDate("");
+      setStartDate("");
+    } catch (error) {
+      console.error("Booking error:", error);
+      toast.error(error.message);
+    }
+  };
+
 
   const bookAppointment = async (e) => {
     e.preventDefault();
@@ -227,6 +340,52 @@ const CounsellorDashboard = () => {
               </form>
             </div>
           </div>
+          <div className='pt-4 border border-t-0'>
+            <div className='flex items-center py-3 gap-2 bg-white border-t border-gray-300 '>
+              <p className='text-gray-400'>Book Holiday</p>
+              <form className="px-5" onSubmit={bookHoliday}>
+                <div className='container mx-auto'>
+                  <p>Start Date</p>
+                  <input
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    className='border border-zinc-300 rounded w-full p-2 mt-1'
+                    type="date"
+                  />
+                </div>
+                <div className='container mx-auto'>
+                  <p>End Date</p>
+                  <input
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className='border border-zinc-300 rounded w-full p-2 mt-1'
+                    type="date"
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className='px-4 py-1 border border-primary text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>
+                    Book Holiday
+                  </button>
+                </div>
+              </form>
+            </div>
+            <p className='text-gray-400'>Booked Holiday</p>
+            {
+              holInfo.length > 0 ? (
+                holInfo.map((holiday, index) => (
+                  <div key={index} className='flex items-center px-6 py-3 gap-3 hover:bg-gray-100'>
+                    <div className='flex-1 text-sm'>
+                      <p className='text-gray-800 font-medium'>Holiday from { slotDateFormat(holiday.startDate)} to {slotDateFormat(holiday.endDate)}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className='text-gray-400 p-4'>No holidays booked.</p>
+              )
+            }
+          
 
         </div>
       </div>
