@@ -12,6 +12,7 @@ const AppContextProvider = (props) => {
     const [doctors, setDoctors] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token')?localStorage.getItem('token'):false)
     const [userData,setUserData] = useState(false)
+    const [holidays, setHoliday] = useState([])
 
     
 
@@ -32,6 +33,35 @@ const AppContextProvider = (props) => {
         }
 
     }
+    const getHoliday = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/api/doctor/list-holiday`);
+    
+            if (data.success) {
+                setHoliday(data); // Ensure this function is defined
+                console.log(data);
+                
+            } else {
+                toast.error(data.message || "Failed to fetch holidays.");
+            }
+        } catch (error) {
+            console.error("Error fetching holidays:", error);
+    
+            // Handle different error cases
+            if (error.response) {
+                // Server responded with a status code outside 2xx
+                toast.error(error.response.data?.message || "Server Error");
+            } else if (error.request) {
+                // Request was made, but no response received
+                toast.error("No response from server. Check network.");
+            } else {
+                // Something else went wrong
+                toast.error(error.message);
+            }
+        }
+    };
+    
+
 
     const loadUserProfileData = async () => {
 
@@ -63,7 +93,9 @@ const AppContextProvider = (props) => {
         backendUrl,
         userData,
         setUserData,
-        loadUserProfileData
+        loadUserProfileData,
+        getHoliday,
+        holidays
     }
 
 
@@ -90,3 +122,4 @@ const AppContextProvider = (props) => {
 };
 
 export default AppContextProvider;
+
