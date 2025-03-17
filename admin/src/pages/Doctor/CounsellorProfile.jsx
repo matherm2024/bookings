@@ -17,7 +17,8 @@ const CounsellorProfile = () => {
     try {
       const updateData = {
         address: profileData.address,
-        available: profileData.available
+        available: profileData.available,
+        daysWorking: profileData.daysWorking
       }
       const { data } = await axios.post(backendUrl + '/api/doctor/update-profile', updateData, { headers: { cToken } })
 
@@ -46,6 +47,11 @@ const CounsellorProfile = () => {
 
   }, [cToken])
 
+  const handleDaysWorkingChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => parseInt(option.value, 10));
+    setDaysWorking(selectedOptions);
+  };
+
 
   return profileData && (
     <div>
@@ -72,6 +78,27 @@ const CounsellorProfile = () => {
         <div className='flex gap-1 pt-2'>
           <input onChange={() => isEdit && setProfileData(prev => ({ ...prev, available: !prev.available }))} checked={profileData.available} type="checkbox" />
           <label htmlFor="">Available</label>
+        </div>
+        <div className='flex-1 flex flex-col gap-1'>
+          <p>Days Working <span className='text-red-500'>CTRL click to select multiple</span></p>
+          <select
+            onChange={(e) => {
+              const selectedValues = Array.from(e.target.selectedOptions, option => parseInt(option.value, 10));
+              setProfileData(prev => ({
+                ...prev,
+                daysWorking: `[${selectedValues.join(',')}]` // Convert to stringified array format
+              }));
+            }}
+            value={profileData.daysWorking ? JSON.parse(profileData.daysWorking) : []} // Parse the string back to an array for the `value` prop
+            className='border rounded px-3 py-2'
+            multiple
+          >
+            <option value="1">Mon</option>
+            <option value="2">Tue</option>
+            <option value="3">Wed</option>
+            <option value="4">Thu</option>
+            <option value="5">Fri</option>
+          </select>
         </div>
         {
           isEdit
