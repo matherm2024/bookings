@@ -385,8 +385,9 @@ const CounsellorDashboard = () => {
                 <p className='text-gray-400 p-4'>No holidays booked.</p>
               )
             }
-          
 
+
+          </div>
         </div>
       </div>
 
