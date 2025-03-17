@@ -16,8 +16,10 @@ const Login = () => {
   const onSubmitHandler = async (event) => {
     event.preventDefault()
     try {
+      const lowerCaseEmail = email.toLowerCase() // Convert email to lowercase
+
       if (state === 'Sign Up') {
-        const { data } = await axios.post(backendUrl + '/api/user/register', { name, password, email })
+        const { data } = await axios.post(backendUrl + '/api/user/register', { name, password, email: lowerCaseEmail })
         if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
@@ -25,12 +27,12 @@ const Login = () => {
           toast.error(data.message)
         }
       } else {
-        const { data } = await axios.post(backendUrl + '/api/user/login', { password, email })
+        const { data } = await axios.post(backendUrl + '/api/user/login', { password, email: lowerCaseEmail })
         if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
         } else {
-          toast.error('incorrect emil or password')
+          toast.error('Incorrect email or password')
         }
       }
     } catch (error) {
@@ -42,7 +44,7 @@ const Login = () => {
     if (token) {
       navigate('/')
     }
-  })
+  }, [token, navigate])
 
   return (
     <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
@@ -56,7 +58,12 @@ const Login = () => {
         </div>}
         <div className='container mx-auto'>
           <p>Email</p>
-          <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="text" onChange={(e) => setEmail(e.target.value)} value={email} />
+          <input 
+            className='border border-zinc-300 rounded w-full p-2 mt-1' 
+            type="text" 
+            onChange={(e) => setEmail(e.target.value.toLowerCase())} // Convert input to lowercase
+            value={email} 
+          />
         </div>
         <div className='container mx-auto'>
           <p>Password</p>
@@ -76,4 +83,3 @@ const Login = () => {
 }
 
 export default Login
-
